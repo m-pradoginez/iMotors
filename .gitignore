@@ -1,0 +1,16 @@
+# IDE / Agent directories (tooling-specific, machine-local)
+.agents/
+.claude/
+.cursor/
+.windsurf/
+
+# Node artifacts at root level
+package-lock.json
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

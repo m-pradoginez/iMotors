@@ -1,0 +1,37 @@
+{
+  "name": "imotors-etl",
+  "version": "1.0.0",
+  "description": "FIPE ETL Pipeline for iMotors",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "db:migrate": "ts-node db/migrate.ts",
+    "etl:run": "ts-node src/index.ts",
+    "db:count:vehicles": "psql $DATABASE_URL -c 'SELECT COUNT(*) FROM vehicles;'"
+  },
+  "keywords": ["etl", "fipe", "vehicles"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "axios-retry": "^4.0.0",
+    "dotenv": "^16.3.0",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.8.0",
+    "@types/pg": "^8.10.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
