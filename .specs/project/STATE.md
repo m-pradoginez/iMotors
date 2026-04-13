@@ -13,6 +13,7 @@
 | 2026-04-13 | T4 complete: Catalog extractor with hierarchy crawl (type→brand→model→year→price), 7 tests passing. |
 | 2026-04-13 | T5 complete: Vehicle transformer with FIPE code extraction, price parsing, 10 tests passing. |
 | 2026-04-13 | T6 complete: PostgreSQL upsert loader with truncate/count helpers, 10 tests passing. |
+| 2026-04-13 | T7 complete: Main ETL pipeline orchestrator with logging and metrics, 9 tests passing. |
 
 ---
 
