@@ -12,7 +12,7 @@
 | T1 | Setup ETL project structure and dependencies | 1h | - | build | `[x] Complete` |
 | T2 | Create database schema and migration | 2h | - | build | `[x] Complete` |
 | T3 | Implement Brasil API client with retry logic | 2h | T1 | quick | `[x] Complete` |
-| T4 | Implement vehicle catalog extraction (hierarchy crawl) | 3h | T3 | quick | `[ ] Not started` |
+| T4 | Implement vehicle catalog extraction (hierarchy crawl) | 3h | T3 | quick | `[x] Complete` |
 | T5 | Implement data transformation and normalization | 2h | T4 | quick | `[ ] Not started` |
 | T6 | Implement PostgreSQL upsert loader | 2h | T2, T5 | quick | `[ ] Not started` |
 | T7 | Add execution logging and metrics | 1h | T6 | build | `[ ] Not started` |

@@ -10,6 +10,7 @@
 | 2026-04-13 | T1 complete: ETL project structure, package.json, tsconfig, build verified. |
 | 2026-04-13 | T2 complete: Database schema (vehicles, vehicle_prices), migration system, connection module. |
 | 2026-04-13 | T3 complete: Brasil API client with axios-retry, all endpoints typed, 8 tests passing. |
+| 2026-04-13 | T4 complete: Catalog extractor with hierarchy crawl (type→brand→model→year→price), 7 tests passing. |
 
 ---
 
