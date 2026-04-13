@@ -8,6 +8,8 @@
 | 2026-04-13 | F-01 spec created (FIPE ETL). Blocked on Q-02 (DB host decision). |
 | 2026-04-13 | F-01 tasks created. Design complete. Ready for implementation. |
 | 2026-04-13 | T1 complete: ETL project structure, package.json, tsconfig, build verified. |
+| 2026-04-13 | T2 complete: Database schema (vehicles, vehicle_prices), migration system, connection module. |
+| 2026-04-13 | T3 complete: Brasil API client with axios-retry, all endpoints typed, 8 tests passing. |
 
 ---
 
