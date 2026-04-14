@@ -1,14 +1,18 @@
 import { BrasilApiClient, VehicleType } from '../clients/brasilApi';
-import { CatalogExtractor } from '../extractors/catalogExtractor';
+import { CatalogExtractor, ExtractionResult } from '../extractors/catalogExtractor';
 import { VehicleTransformer } from '../transformers/vehicleTransformer';
 import { VehicleLoader } from '../loaders/vehicleLoader';
+import { checkpointManager } from '../utils/checkpoint';
 
 export interface PipelineConfig {
   sampleMode?: boolean;
-  sampleVehicleTypes?: string[];
+  batchMode?: boolean;       // Process limited brands, resume from checkpoint
+  batchSize?: number;      // Brands per batch (default: 10)
   maxBrandsPerType?: number;
   maxModelsPerBrand?: number;
+  sampleVehicleTypes?: string[];
   skipLoad?: boolean; // For extract-only runs
+  resetCheckpoint?: boolean; // Reset and start over
 }
 
 export interface PipelineMetrics {
@@ -152,7 +156,12 @@ export class FipePipeline {
     }
   }
 
-  private async extract(config: PipelineConfig) {
+  private async extract(config: PipelineConfig): Promise<ExtractionResult> {
+    // Handle checkpoint reset if requested
+    if (config.resetCheckpoint) {
+      checkpointManager.reset();
+    }
+
     if (config.sampleMode) {
       return this.extractor.extractSample(
         config.sampleVehicleTypes as VehicleType[] | undefined,
@@ -160,6 +169,22 @@ export class FipePipeline {
         config.maxModelsPerBrand
       );
     }
+
+    // Batch mode: process limited brands with checkpointing
+    if (config.batchMode) {
+      const batchSize = config.batchSize || 10;
+      const startIndex = checkpointManager.getStartIndex();
+      console.log(`[Pipeline] Batch mode: starting from brand index ${startIndex}, max ${batchSize} brands`);
+      return this.extractor.extractBatch(startIndex, batchSize);
+    }
+
+    // Full mode: check if we have a checkpoint to resume from
+    const startIndex = checkpointManager.getStartIndex();
+    if (startIndex > 0 && !config.resetCheckpoint) {
+      console.log(`[Pipeline] Resuming from checkpoint at brand index ${startIndex}`);
+      return this.extractor.extractBatch(startIndex, 9999);
+    }
+
     return this.extractor.extract();
   }
 }
