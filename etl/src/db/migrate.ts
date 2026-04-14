@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as dotenv from 'dotenv';
 import { query, closePool, testConnection } from './connection';
+
+dotenv.config();
+
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'NOT SET');
 
 const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
 
