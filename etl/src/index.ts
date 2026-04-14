@@ -13,7 +13,8 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const sampleMode = args.includes('--sample') || process.env.ETL_SAMPLE_MODE === 'true';
   const batchMode = args.includes('--batch') || process.env.ETL_BATCH_MODE === 'true';
-  const batchSize = parseInt(process.env.ETL_BATCH_SIZE || '10', 10);
+  const smallBatch = args.includes('--small-batch');
+  const batchSize = smallBatch ? 1 : parseInt(process.env.ETL_BATCH_SIZE || '10', 10);
   const resetCheckpoint = args.includes('--reset') || process.env.ETL_RESET === 'true';
   const status = args.includes('--status');
   const skipLoad = args.includes('--skip-load') || process.env.ETL_SKIP_LOAD === 'true';
