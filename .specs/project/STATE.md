@@ -19,6 +19,8 @@
 | 2026-04-13 | F-02 started: Inmetro PBE ETL spec and tasks created. |
 | 2026-04-13 | F-02 T1 complete: xlsx library added, .env.example created. |
 | 2026-04-13 | F-02 T2 complete: fuel_efficiency table schema with indexes. |
+| 2026-04-13 | F-02 T3 complete: spreadsheet downloader with HTTP client, 5 tests passing. |
+| 2026-04-13 | F-02 T4 complete: Inmetro spreadsheet parser with xlsx library, 5 tests passing. |
 
 ---
 
