@@ -9,8 +9,8 @@
 
 | ID | Task | Est | Depends | Gate | Status |
 |---|---|---|---|---|---|
-| T1 | Setup spreadsheet parsing dependencies | 1h | - | build | `[ ] Not started` |
-| T2 | Design fuel efficiency database schema | 1h | F-01 | build | `[ ] Not started` |
+| T1 | Setup spreadsheet parsing dependencies | 1h | - | build | `[x] Complete` |
+| T2 | Design fuel efficiency database schema | 1h | F-01 | build | `[x] Complete` |
 | T3 | Implement spreadsheet downloader | 1h | T1 | quick | `[ ] Not started` |
 | T4 | Implement Inmetro spreadsheet parser | 2h | T1, T3 | quick | `[ ] Not started` |
 | T5 | Implement data normalization and mapping | 2h | T4 | quick | `[ ] Not started` |
