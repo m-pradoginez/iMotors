@@ -17,3 +17,6 @@ Thumbs.db
 
 # ETL data (checkpoint files)
 etl/data/
+
+# Skills lock file
+skills-lock.json
