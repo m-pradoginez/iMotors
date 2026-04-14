@@ -263,7 +263,7 @@ export class CatalogExtractor {
 
           try {
             // Delay between brands to avoid rate limiting
-            await new Promise(resolve => setTimeout(resolve, 200));
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
             const modelsResponse = await this.client.getModels(vehicleType, brand.code);
             const models = modelsResponse.modelos || [];
@@ -272,7 +272,7 @@ export class CatalogExtractor {
             for (const model of models) {
               try {
                 // Small delay between models
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 200));
                 
                 const years = await this.client.getYears(vehicleType, brand.code, model.code);
                 totalYears += years.length;
@@ -280,7 +280,7 @@ export class CatalogExtractor {
                 for (const year of years) {
                   try {
                     // Delay between year requests
-                    await new Promise(resolve => setTimeout(resolve, 30));
+                    await new Promise(resolve => setTimeout(resolve, 100));
                     
                     const price = await this.client.getPrice(vehicleType, brand.code, model.code, year.code);
                     successfulPrices++;
