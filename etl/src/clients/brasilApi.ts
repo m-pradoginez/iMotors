@@ -50,8 +50,8 @@ export class BrasilApiClient {
       },
     });
 
-    const maxRetries = 5;
-    const retryDelay = 2000;
+    const maxRetries = parseInt(process.env.ETL_MAX_RETRIES || '5', 10);
+    const retryDelay = parseInt(process.env.ETL_RETRY_DELAY_MS || '2000', 10);
 
     axiosRetry(this.client, {
       retries: maxRetries,
