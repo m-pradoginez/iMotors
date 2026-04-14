@@ -1,7 +1,7 @@
 # F-02 Tasks: Inmetro PBE ETL Pipeline
 
 **Spec**: `.specs/features/F-02-inmetro-etl/spec.md`  
-**Status**: Ready for implementation
+**Status**: Complete
 
 ---
 
@@ -16,7 +16,7 @@
 | T5 | Implement data normalization and mapping | 2h | T4 | quick | `[x] Complete` |
 | T6 | Implement PostgreSQL upsert loader | 1h | T2, T5 | quick | `[x] Complete` |
 | T7 | Add execution logging and metrics | 1h | T6 | build | `[x] Complete` |
-| T8 | End-to-end validation and documentation | 1h | T7 | build | `[ ] Not started` |
+| T8 | End-to-end validation and documentation | 1h | T7 | build | `[x] Complete` |
 
 ---
 

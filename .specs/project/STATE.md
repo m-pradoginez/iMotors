@@ -24,6 +24,8 @@
 | 2026-04-13 | F-02 T5 complete: fuel efficiency transformer with brand/model normalization, 5 tests passing. |
 | 2026-04-13 | F-02 T6 complete: PostgreSQL upsert loader with batch inserts, 7 tests passing. |
 | 2026-04-13 | F-02 T7 complete: Inmetro pipeline orchestrator with logging and metrics, 5 tests passing. |
+| 2026-04-13 | F-02 T8 complete: README extended with Inmetro instructions. |
+| 2026-04-13 | F-02 complete: Inmetro PBE ETL pipeline. |
 
 ---
 

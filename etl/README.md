@@ -1,6 +1,6 @@
-# iMotors ETL — FIPE Pipeline
+# iMotors ETL — FIPE & Inmetro Pipelines
 
-ETL pipeline for ingesting vehicle data from the Brasil API FIPE table into PostgreSQL.
+ETL pipelines for ingesting vehicle data from Brasil API FIPE table and Inmetro PBE fuel efficiency spreadsheets into PostgreSQL.
 
 ## Quick Start
 
@@ -102,3 +102,52 @@ This ETL uses the free [fipe.parallelum.com.br](https://fipe.parallelum.com.br) 
 - Running incrementally with delays between batches
 - Caching results locally
 - Using a paid API tier for higher limits
+
+## Inmetro PBE Fuel Efficiency ETL
+
+The Inmetro PBE pipeline ingests fuel efficiency data from Excel spreadsheets published by Inmetro.
+
+### Quick Start
+
+```bash
+# Run Inmetro pipeline with a spreadsheet file
+npm run etl:inmetro -- --file data/inmetro/pbe-data.xlsx
+
+# Skip database load (parse and transform only)
+npm run etl:inmetro -- --file data/inmetro/pbe-data.xlsx --skip-load
+```
+
+### Environment Variables
+
+Add to `.env` file:
+
+```
+# Inmetro PBE config
+INMETRO_SPREADSHEET_URL=http://www.inmetro.gov.br/consumidor/pbe/
+INMETRO_DATA_DIR=./data/inmetro
+```
+
+### Components
+
+- **InmetroDownloader**: Downloads spreadsheets from Inmetro PBE website
+- **InmetroParser**: Parses Excel files with xlsx library
+- **FuelEfficiencyTransformer**: Normalizes brand/model names to match FIPE conventions
+- **FuelEfficiencyLoader**: Upserts fuel efficiency data to PostgreSQL
+
+### Schema
+
+The `fuel_efficiency` table stores:
+- `fipe_code`: Cross-reference to FIPE vehicle (nullable, set in F-03)
+- `brand`: Vehicle brand (normalized)
+- `model`: Vehicle model (normalized)
+- `year`: Model year
+- `fuel_type`: gasolina, etanol, flex, diesel, hibrido
+- `city_km_l`: City fuel efficiency (km/l)
+- `highway_km_l`: Highway fuel efficiency (km/l)
+- `efficiency_rating`: Inmetro efficiency rating (A, B, C, etc.)
+
+### Notes
+
+- Full E2E testing requires actual Inmetro spreadsheet data
+- The download phase is implemented but requires specific spreadsheet filenames from Inmetro PBE
+- For testing with local files, use the `--file` option
