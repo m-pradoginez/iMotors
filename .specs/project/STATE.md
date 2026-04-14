@@ -16,6 +16,7 @@
 | 2026-04-13 | T7 complete: Main ETL pipeline orchestrator with logging and metrics, 9 tests passing. |
 | 2026-04-13 | T8 complete: E2E integration test with real DB option, README comprehensive with setup/usage/config. |
 | 2026-04-13 | F-01 complete: FIPE ETL pipeline. |
+| 2026-04-13 | F-02 started: Inmetro PBE ETL spec and tasks created. |
 
 ---
 

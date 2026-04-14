@@ -14,7 +14,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 | # | Feature | Scope | Status |
 |---|---|---|---|
 | F-01 | ETL Pipeline — FIPE ingestion | Fetch vehicle list + prices from Brasil API; normalize and persist to PostgreSQL | `[x] Complete` |
-| F-02 | ETL Pipeline — Inmetro PBE ingestion | Parse Inmetro spreadsheets; extract fuel efficiency (km/l city + highway) per model | `[ ] Not started` |
+| F-02 | ETL Pipeline — Inmetro PBE ingestion | Parse Inmetro spreadsheets; extract fuel efficiency (km/l city + highway) per model | `[~] In progress` |
 | F-03 | Vehicle catalog cross-reference | Join FIPE × Inmetro data into unified `vehicles` table; handle unmatched records | `[ ] Not started` |
 
 **Milestone done when:** A seeded PostgreSQL instance contains a queryable vehicle catalog with FIPE price + fuel efficiency for a meaningful set of models (target: 100+ vehicles across categories).
