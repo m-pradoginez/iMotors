@@ -92,5 +92,5 @@ Brazilian car buyers face fragmented, biased information. Classifieds show stick
 
 ## Project Status
 
-- **Phase:** Initialization — project setup complete
-- **Next:** Create feature roadmap → Begin ETL + Database feature specification
+- **Phase:** M1 — Data Foundation (F-01 complete)
+- **Next:** F-02 — Inmetro PBE ingestion

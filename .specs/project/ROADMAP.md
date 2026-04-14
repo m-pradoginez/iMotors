@@ -13,7 +13,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
-| F-01 | ETL Pipeline — FIPE ingestion | Fetch vehicle list + prices from Brasil API; normalize and persist to PostgreSQL | `[ ] Not started` |
+| F-01 | ETL Pipeline — FIPE ingestion | Fetch vehicle list + prices from Brasil API; normalize and persist to PostgreSQL | `[x] Complete` |
 | F-02 | ETL Pipeline — Inmetro PBE ingestion | Parse Inmetro spreadsheets; extract fuel efficiency (km/l city + highway) per model | `[ ] Not started` |
 | F-03 | Vehicle catalog cross-reference | Join FIPE × Inmetro data into unified `vehicles` table; handle unmatched records | `[ ] Not started` |
 
