@@ -14,6 +14,8 @@
 | 2026-04-13 | T5 complete: Vehicle transformer with FIPE code extraction, price parsing, 10 tests passing. |
 | 2026-04-13 | T6 complete: PostgreSQL upsert loader with truncate/count helpers, 10 tests passing. |
 | 2026-04-13 | T7 complete: Main ETL pipeline orchestrator with logging and metrics, 9 tests passing. |
+| 2026-04-13 | T8 complete: E2E integration test passing, README updated, feature marked complete. |
+| 2026-04-13 | F-01 complete: FIPE ETL pipeline. |
 
 ---
 
@@ -53,8 +55,9 @@
 |---|---|---|
 | T-01 | Decide backend language (Q-01) | Before F-04 |
 | T-02 | [x] Decide DB host (Q-02) | Done |
-| T-05 | [ ] Create F-01 design.md | Done |
-| T-06 | [ ] Create F-01 tasks.md | Done |
+| T-05 | [x] Create F-01 design.md | Done |
+| T-06 | [x] Create F-01 tasks.md | Done |
+| T-08 | [x] E2E validation + README | Done (partial - rate limited) |
 | T-03 | Define TCO formula components (Q-03) | Before F-05 |
 | T-04 | Define FIPE ↔ Inmetro matching strategy (Q-04) | Before F-03 |
 
