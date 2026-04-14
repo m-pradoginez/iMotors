@@ -21,6 +21,7 @@
 | 2026-04-13 | F-02 T2 complete: fuel_efficiency table schema with indexes. |
 | 2026-04-13 | F-02 T3 complete: spreadsheet downloader with HTTP client, 5 tests passing. |
 | 2026-04-13 | F-02 T4 complete: Inmetro spreadsheet parser with xlsx library, 5 tests passing. |
+| 2026-04-13 | F-02 T5 complete: fuel efficiency transformer with brand/model normalization, 5 tests passing. |
 
 ---
 
