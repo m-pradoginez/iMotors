@@ -9,14 +9,14 @@
 
 | ID | Task | Est | Depends | Gate | Status |
 |---|---|---|---|---|---|
-| T1 | Create TCO calculator class structure | 0.5h | - | quick | `[ ] Not started` |
-| T2 | Implement depreciation calculation | 1h | T1 | quick | `[ ] Not started` |
-| T3 | Implement fuel cost calculation | 1h | T1 | quick | `[ ] Not started` |
-| T4 | Implement IPVA calculation | 1h | T1 | quick | `[ ] Not started` |
-| T5 | Implement insurance calculation | 1h | T1 | quick | `[ ] Not started` |
-| T6 | Implement maintenance calculation | 1h | T1 | quick | `[ ] Not started` |
-| T7 | Implement main TCO calculation method | 1h | T2-T6 | quick | `[ ] Not started` |
-| T8 | Add configuration for rates and prices | 0.5h | T1 | quick | `[ ] Not started` |
+| T1 | Create TCO calculator class structure | 0.5h | - | quick | `[x] Complete` |
+| T2 | Implement depreciation calculation | 1h | T1 | quick | `[x] Complete` |
+| T3 | Implement fuel cost calculation | 1h | T1 | quick | `[x] Complete` |
+| T4 | Implement IPVA calculation | 1h | T1 | quick | `[x] Complete` |
+| T5 | Implement insurance calculation | 1h | T1 | quick | `[x] Complete` |
+| T6 | Implement maintenance calculation | 1h | T1 | quick | `[x] Complete` |
+| T7 | Implement main TCO calculation method | 1h | T2-T6 | quick | `[x] Complete` |
+| T8 | Add configuration for rates and prices | 0.5h | T1 | quick | `[x] Complete` |
 | T9 | Write unit tests for each component | 2h | T2-T8 | build | `[ ] Not started` |
 | T10 | Write integration tests for TCO calculation | 1h | T7, T9 | build | `[ ] Not started` |
 | T11 | Validate against manual calculations | 1h | T10 | build | `[ ] Not started` |
