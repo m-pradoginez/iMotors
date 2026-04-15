@@ -38,6 +38,8 @@
 | 2026-04-14 | F-03 complete: Vehicle catalog cross-reference pipeline. |
 | 2026-04-14 | F-04 started: OpenAPI spec design spec and tasks created. |
 | 2026-04-14 | F-04 T1-T6 complete: OpenAPI YAML file with endpoints, schemas, errors, examples. |
+| 2026-04-14 | F-04 T7-T8 complete: spec validated (manual) and verified. |
+| 2026-04-14 | F-04 complete: OpenAPI spec design. |
 
 ---
 

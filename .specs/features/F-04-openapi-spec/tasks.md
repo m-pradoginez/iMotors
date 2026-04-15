@@ -1,7 +1,7 @@
 # F-04 Tasks: OpenAPI Spec Design
 
 **Spec**: `.specs/features/F-04-openapi-spec/spec.md`
-**Status**: Ready for implementation
+**Status**: Complete
 
 ---
 
@@ -15,8 +15,8 @@
 | T4 | Define data models and schemas | 1h | T2, T3 | quick | `[x] Complete` |
 | T5 | Define error responses and status codes | 0.5h | T2, T3 | quick | `[x] Complete` |
 | T6 | Add examples and documentation | 1h | T4 | quick | `[x] Complete` |
-| T7 | Validate OpenAPI spec | 0.5h | T6 | build | `[ ] Not started` |
-| T8 | Generate server stub to verify | 0.5h | T7 | build | `[ ] Not started` |
+| T7 | Validate OpenAPI spec | 0.5h | T6 | build | `[x] Complete` |
+| T8 | Generate server stub to verify | 0.5h | T7 | build | `[x] Complete` |
 
 ---
 
