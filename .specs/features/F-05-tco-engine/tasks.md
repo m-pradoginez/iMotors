@@ -1,7 +1,7 @@
 # F-05 Tasks: TCO Calculation Engine
 
 **Spec**: `.specs/features/F-05-tco-engine/spec.md`
-**Status**: Ready for implementation
+**Status**: Complete
 
 ---
 
@@ -19,7 +19,7 @@
 | T8 | Add configuration for rates and prices | 0.5h | T1 | quick | `[x] Complete` |
 | T9 | Write unit tests for each component | 2h | T2-T8 | build | `[x] Complete` |
 | T10 | Write integration tests for TCO calculation | 1h | T7, T9 | build | `[x] Complete` |
-| T11 | Validate against manual calculations | 1h | T10 | build | `[ ] Not started` |
+| T11 | Validate against manual calculations | 1h | T10 | build | `[x] Complete` |
 
 ---
 

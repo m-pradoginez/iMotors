@@ -44,6 +44,8 @@
 | 2026-04-15 | F-05 T1-T8 complete: TCO calculator with all component calculations and config. |
 | 2026-04-15 | F-05 T9 complete: unit tests for each component with 35 tests passing. |
 | 2026-04-15 | F-05 T10 complete: integration tests for TCO calculation with 37 tests passing. |
+| 2026-04-15 | F-05 T11 complete: manual validation with 5 sample vehicles, all within ±10% tolerance. |
+| 2026-04-15 | F-05 complete: TCO calculation engine with 42 tests passing. |
 
 ---
 
