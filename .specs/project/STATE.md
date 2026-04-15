@@ -43,6 +43,7 @@
 | 2026-04-15 | F-05 started: TCO calculation engine spec and tasks created. |
 | 2026-04-15 | F-05 T1-T8 complete: TCO calculator with all component calculations and config. |
 | 2026-04-15 | F-05 T9 complete: unit tests for each component with 35 tests passing. |
+| 2026-04-15 | F-05 T10 complete: integration tests for TCO calculation with 37 tests passing. |
 
 ---
 

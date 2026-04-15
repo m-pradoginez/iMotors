@@ -236,5 +236,55 @@ describe('TCOCalculator', () => {
       expect(result.tco_monthly).toBeGreaterThan(0);
       expect(result.breakdown.fuel_cost_monthly).toBeGreaterThan(0);
     });
+
+    it('should calculate TCO for electric vehicle with discount', () => {
+      const input: TCOInput = {
+        vehicle: {
+          fipe_code: '002001-0',
+          price: 150000,
+          category: 'suv',
+          fuel_type: 'eletrico',
+          city_km_l: 5,
+          highway_km_l: 6,
+        },
+        user: {
+          budget_monthly: 4000,
+          mileage_annual_km: 20000,
+          city_highway_ratio: 0.8,
+          state: 'SP',
+        },
+      };
+
+      const result = tcoCalculator.calculate(input);
+
+      expect(result.tco_monthly).toBeGreaterThan(0);
+      // IPVA should be discounted for electric
+      expect(result.breakdown.ipva_monthly).toBeLessThan(625); // Without discount: (150000 * 0.05) / 12 = 625
+    });
+
+    it('should calculate TCO for high-value vehicle with surcharge', () => {
+      const input: TCOInput = {
+        vehicle: {
+          fipe_code: '003001-0',
+          price: 200000,
+          category: 'coupe',
+          fuel_type: 'gasolina',
+          city_km_l: 8,
+          highway_km_l: 10,
+        },
+        user: {
+          budget_monthly: 5000,
+          mileage_annual_km: 10000,
+          city_highway_ratio: 0.5,
+          state: 'RJ',
+        },
+      };
+
+      const result = tcoCalculator.calculate(input);
+
+      expect(result.tco_monthly).toBeGreaterThan(0);
+      // Insurance should have high-value surcharge
+      expect(result.breakdown.insurance_monthly).toBeGreaterThan(300);
+    });
   });
 });
