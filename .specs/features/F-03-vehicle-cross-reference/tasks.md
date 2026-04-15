@@ -11,7 +11,7 @@
 |---|---|---|---|---|---|
 | T1 | Create unified vehicles table schema | 1h | F-01, F-02 | build | `[x] Complete` |
 | T2 | Implement brand/model normalization utilities | 1h | - | quick | `[x] Complete` |
-| T3 | Implement exact matching logic | 1h | T2 | quick | `[ ] Not started` |
+| T3 | Implement exact matching logic | 1h | T2 | quick | `[x] Complete` |
 | T4 | Implement fuzzy matching logic | 2h | T3 | quick | `[ ] Not started` |
 | T5 | Implement cross-reference transformer | 2h | T4 | quick | `[ ] Not started` |
 | T6 | Implement cross-reference loader | 1h | T1, T5 | quick | `[ ] Not started` |
