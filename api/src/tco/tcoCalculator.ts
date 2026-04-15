@@ -92,7 +92,7 @@ export class TCOCalculator {
    */
   calculateIPVA(price: number, state: string, fuel_type?: string): number {
     const stateCode = state.toUpperCase();
-    let rate = tcoConfig.ipvaRates[stateCode] || 0.03;
+    let rate = tcoConfig.ipvaRates[stateCode] || tcoConfig.ipvaRates.default;
 
     // Electric vehicle discount
     if (fuel_type?.toLowerCase() === 'eletrico') {

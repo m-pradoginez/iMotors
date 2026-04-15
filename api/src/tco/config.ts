@@ -11,7 +11,7 @@ export const tcoConfig = {
     diesel: 6.2,
     hibrido: 5.5, // Uses gasolina price
     eletrico: 0.5, // Per kWh equivalent
-  },
+  } as Record<string, number>,
 
   // Depreciation rates by category (annual percentage)
   depreciationRates: {
@@ -22,7 +22,7 @@ export const tcoConfig = {
     minivan: 0.12,
     coupe: 0.18,
     conversivel: 0.20,
-  },
+  } as Record<string, number>,
 
   // IPVA rates by state (annual percentage)
   ipvaRates: {
@@ -39,7 +39,7 @@ export const tcoConfig = {
     DF: 0.03,
     // Default rate for other states
     default: 0.02,
-  },
+  } as Record<string, number>,
 
   // Insurance configuration
   insurance: {
@@ -60,5 +60,5 @@ export const tcoConfig = {
     minivan: 9,
     coupe: 9,
     conversivel: 9,
-  },
+  } as Record<string, number>,
 };
