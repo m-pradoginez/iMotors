@@ -3,6 +3,7 @@
 .claude/
 .cursor/
 .windsurf/
+.obsidian/
 
 # Node artifacts at root level
 package-lock.json
