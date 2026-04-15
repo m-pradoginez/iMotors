@@ -28,7 +28,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 |---|---|---|---|
 | F-04 | OpenAPI spec design | Define all endpoints, request/response schemas, error contracts — before any code | `[x] Complete` |
 | F-05 | TCO calculation engine | Core domain logic: depreciation, fuel cost, IPVA, insurance estimate, maintenance estimate | `[x] Complete` |
-| F-06 | Recommendation API | Accept user constraints → query vehicle catalog → rank by TCO → return Top 3 with breakdown | `[ ] Not started` |
+| F-06 | Recommendation API | Accept user constraints → query vehicle catalog → rank by TCO → return Top 3 with breakdown | `[~] In progress` |
 
 **Milestone done when:** `POST /recommendations` accepts a valid user profile and returns a ranked list of 3 vehicles with monthly cost breakdown. Validated against manual reference calculations.
 
