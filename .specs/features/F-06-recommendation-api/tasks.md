@@ -1,7 +1,7 @@
 # F-06 Tasks: Recommendation API
 
 **Spec**: `.specs/features/F-06-recommendation-api/spec.md`
-**Status**: Ready for implementation
+**Status**: Complete
 
 ---
 
@@ -9,15 +9,15 @@
 
 | ID | Task | Est | Depends | Gate | Status |
 |---|---|---|---|---|---|
-| T1 | Create recommendation service structure | 0.5h | - | quick | `[ ] Not started` |
-| T2 | Implement input validation | 1h | T1 | quick | `[ ] Not started` |
-| T3 | Implement vehicle catalog query | 1h | T1 | quick | `[ ] Not started` |
-| T4 | Integrate TCO calculator | 1h | T1, F-05 | quick | `[ ] Not started` |
-| T5 | Implement ranking logic | 1h | T3, T4 | quick | `[ ] Not started` |
-| T6 | Implement POST /recommendations endpoint | 1h | T2, T5 | quick | `[ ] Not started` |
-| T7 | Write unit tests for recommendation logic | 2h | T2-T5 | build | `[ ] Not started` |
-| T8 | Write integration tests for endpoint | 1h | T6, T7 | build | `[ ] Not started` |
-| T9 | Validate against OpenAPI spec | 0.5h | T6 | build | `[ ] Not started` |
+| T1 | Create recommendation service structure | 0.5h | - | quick | `[x] Complete` |
+| T2 | Implement input validation | 1h | T1 | quick | `[x] Complete` |
+| T3 | Implement vehicle catalog query | 1h | T1 | quick | `[x] Complete` |
+| T4 | Integrate TCO calculator | 1h | T1, F-05 | quick | `[x] Complete` |
+| T5 | Implement ranking logic | 1h | T3, T4 | quick | `[x] Complete` |
+| T6 | Implement POST /recommendations endpoint | 1h | T2, T5 | quick | `[x] Complete` |
+| T7 | Write unit tests for recommendation logic | 2h | T2-T5 | build | `[x] Complete` |
+| T8 | Write integration tests for endpoint | 1h | T6, T7 | build | `[x] Complete` |
+| T9 | Validate against OpenAPI spec | 0.5h | T6 | build | `[x] Complete` |
 
 ---
 

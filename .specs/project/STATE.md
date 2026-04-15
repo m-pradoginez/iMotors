@@ -47,6 +47,9 @@
 | 2026-04-15 | F-05 T11 complete: manual validation with 5 sample vehicles, all within ±10% tolerance. |
 | 2026-04-15 | F-05 complete: TCO calculation engine with 42 tests passing. |
 | 2026-04-15 | F-06 started: Recommendation API spec and tasks created. |
+| 2026-04-15 | F-06 T1-T9 complete: recommendation service with validation, query, TCO integration, ranking, controller, and tests (64 tests passing). |
+| 2026-04-15 | F-06 complete: Recommendation API with 64 tests passing. |
+| 2026-04-15 | M2 complete: Backend API milestone (F-04, F-05, F-06). |
 
 ---
 
