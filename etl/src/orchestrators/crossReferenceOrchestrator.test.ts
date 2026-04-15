@@ -136,4 +136,88 @@ describe('CrossReferenceOrchestrator', () => {
       expect(crossReferenceLoader.truncate).toHaveBeenCalled();
     });
   });
+
+  describe('E2E', () => {
+    it('should run complete pipeline with exact match', async () => {
+      const fipeVehicles: FipeVehicle[] = [
+        {
+          fipeCode: '001001-0',
+          brand: 'TOYOTA',
+          model: 'COROLLA',
+          year: 2023,
+          fuelType: 'gasolina',
+          price: 120000,
+        },
+      ];
+
+      const inmetroVehicles: InmetroVehicle[] = [
+        {
+          id: 1,
+          brand: 'TOYOTA',
+          model: 'COROLLA',
+          year: 2023,
+          fuelType: 'gasolina',
+          cityKmL: 12.5,
+          highwayKmL: 15.2,
+          efficiencyRating: 'A',
+        },
+      ];
+
+      const { ExactMatcher } = require('../matchers/exactMatcher');
+      const { FuzzyMatcher } = require('../matchers/fuzzyMatcher');
+      const { crossReferenceTransformer } = require('../transformers/crossReferenceTransformer');
+      const { crossReferenceLoader } = require('../loaders/crossReferenceLoader');
+
+      ExactMatcher.matchAll.mockReturnValue([
+        {
+          fipeCode: '001001-0',
+          inmetroId: 1,
+          confidence: 1.0,
+          matchType: 'exact',
+        },
+      ]);
+      ExactMatcher.getStats.mockReturnValue({ matched: 1, unmatched: 0, matchRate: 100 });
+      FuzzyMatcher.matchAll.mockReturnValue([]);
+      FuzzyMatcher.getStats.mockReturnValue({ matched: 0, unmatched: 0, matchRate: 0, averageConfidence: 0 });
+      crossReferenceTransformer.transform.mockReturnValue({
+        vehicles: [
+          {
+            fipeCode: '001001-0',
+            brand: 'TOYOTA',
+            model: 'COROLLA',
+            year: 2023,
+            fuelType: 'gasolina',
+            price: 120000,
+            cityKmL: 12.5,
+            highwayKmL: 15.2,
+            efficiencyRating: 'A',
+            matchConfidence: 'exact',
+          },
+        ],
+        fipeOnly: [],
+        inmetroOnly: [],
+        errors: [],
+      });
+      crossReferenceLoader.load.mockResolvedValue({ inserted: 1, updated: 0, errors: [] });
+
+      const metrics = await crossReferenceOrchestrator.execute(fipeVehicles, inmetroVehicles);
+
+      expect(metrics.fipeCount).toBe(1);
+      expect(metrics.inmetroCount).toBe(1);
+      expect(metrics.exactMatches).toBe(1);
+      expect(metrics.fuzzyMatches).toBe(0);
+      expect(metrics.totalMatches).toBe(1);
+      expect(metrics.loaded).toBe(1);
+      expect(metrics.errors).toBe(0);
+
+      expect(crossReferenceTransformer.transform).toHaveBeenCalledWith(
+        fipeVehicles,
+        inmetroVehicles,
+        expect.arrayContaining([
+          expect.objectContaining({ fipeCode: '001001-0', matchType: 'exact' }),
+        ])
+      );
+      expect(crossReferenceLoader.load).toHaveBeenCalled();
+    });
+  });
 });

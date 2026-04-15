@@ -151,3 +151,64 @@ The `fuel_efficiency` table stores:
 - Full E2E testing requires actual Inmetro spreadsheet data
 - The download phase is implemented but requires specific spreadsheet filenames from Inmetro PBE
 - For testing with local files, use the `--file` option
+
+## F-03 Vehicle Cross-Reference
+
+The Vehicle Cross-Reference pipeline matches FIPE vehicles with Inmetro fuel efficiency data to create a unified vehicle catalog.
+
+### Quick Start
+
+```bash
+# Run cross-reference pipeline (requires F-01 and F-02 to be completed)
+npm run etl:cross-reference
+
+# Clear unified table before running
+npm run etl:cross-reference -- --clear
+```
+
+### Matching Strategy
+
+The pipeline uses a two-phase matching approach:
+
+1. **Exact Matching**: Matches vehicles with identical brand, model, year, and fuel type
+2. **Fuzzy Matching**: Uses string similarity (Levenshtein distance) to match vehicles with slight variations in naming
+
+### Components
+
+- **ExactMatcher**: Matches vehicles using exact criteria (brand, model, year, fuel_type)
+- **FuzzyMatcher**: Matches vehicles using configurable confidence threshold (default: 0.8)
+- **CrossReferenceTransformer**: Combines FIPE price data with Inmetro efficiency data
+- **CrossReferenceLoader**: Upserts unified vehicles to `vehicles_unified` table and updates `fuel_efficiency.fipe_code`
+- **CrossReferenceOrchestrator**: Orchestrates the pipeline with logging and metrics
+
+### Schema
+
+The `vehicles_unified` table stores:
+- `fipe_code`: FIPE vehicle code (primary key)
+- `brand`: Vehicle brand (normalized)
+- `model`: Vehicle model (normalized)
+- `year`: Model year
+- `fuel_type`: gasolina, etanol, flex, diesel, hibrido, eletrico
+- `price`: FIPE average price (nullable for Inmetro-only)
+- `city_km_l`: City fuel efficiency (nullable for FIPE-only)
+- `highway_km_l`: Highway fuel efficiency (nullable for FIPE-only)
+- `efficiency_rating`: Inmetro efficiency rating (nullable for FIPE-only)
+- `match_confidence`: exact, fuzzy, or manual
+- `match_notes`: Additional context for unmatched records
+
+### Execution Metrics
+
+The pipeline returns execution metrics including:
+- FIPE and Inmetro vehicle counts
+- Exact and fuzzy match counts
+- FIPE-only and Inmetro-only unmatched counts
+- Total loaded records
+- Execution duration
+- Error count
+
+### Notes
+
+- Requires F-01 (FIPE ETL) and F-02 (Inmetro ETL) to be completed first
+- Idempotent execution - can be run multiple times safely
+- Updates `fuel_efficiency.fipe_code` for matched records
+- Execution time should be under 5 minutes for typical datasets

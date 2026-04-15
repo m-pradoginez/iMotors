@@ -34,6 +34,8 @@
 | 2026-04-14 | F-03 T5 complete: cross-reference transformer with 7 tests passing. |
 | 2026-04-14 | F-03 T6 complete: cross-reference loader with 6 tests passing. |
 | 2026-04-14 | F-03 T7 complete: execution logging and metrics with 4 tests passing. |
+| 2026-04-14 | F-03 T8 complete: E2E validation and documentation with 5 tests passing. |
+| 2026-04-14 | F-03 complete: Vehicle catalog cross-reference pipeline. |
 
 ---
 
