@@ -1,4 +1,5 @@
 import { FuelEfficiencyEntry } from '../extractors/inmetroParser';
+import { Normalizer } from '../utils/normalizer';
 
 export interface TransformedFuelEfficiency {
   fipeCode?: string;
@@ -42,10 +43,13 @@ export class FuelEfficiencyTransformer {
 
   private transformEntry(entry: FuelEfficiencyEntry): TransformedFuelEfficiency {
     // Normalize brand name to match FIPE conventions
-    const normalizedBrand = this.normalizeBrand(entry.brand);
+    const normalizedBrand = Normalizer.normalizeBrand(entry.brand);
     
     // Normalize model name to match FIPE conventions
-    const normalizedModel = this.normalizeModel(entry.model);
+    const normalizedModel = Normalizer.normalizeModel(entry.model);
+    
+    // Normalize fuel type
+    const normalizedFuelType = Normalizer.normalizeFuelType(entry.fuelType);
     
     // Validate required fields
     if (!normalizedBrand || !normalizedModel) {
@@ -62,52 +66,11 @@ export class FuelEfficiencyTransformer {
       brand: normalizedBrand,
       model: normalizedModel,
       year: entry.year,
-      fuelType: entry.fuelType,
+      fuelType: normalizedFuelType,
       cityKmL: entry.cityKmL,
       highwayKmL: entry.highwayKmL,
       efficiencyRating: entry.efficiencyRating,
     };
-  }
-
-  private normalizeBrand(brand: string): string {
-    // Remove common prefixes/suffixes
-    let normalized = brand
-      .toUpperCase()
-      .trim()
-      .replace(/^THE\s+/i, '')
-      .replace(/\s+(CORPORATION|INC|LTD|GMBH|SA)$/i, '');
-
-    // Common brand name mappings to FIPE format
-    const brandMappings: Record<string, string> = {
-      'VW': 'VOLKSWAGEN',
-      'MERCEDES': 'MERCEDES-BENZ',
-      'CHEVY': 'CHEVROLET',
-      'GM': 'CHEVROLET',
-    };
-
-    if (brandMappings[normalized]) {
-      normalized = brandMappings[normalized];
-    }
-
-    return normalized;
-  }
-
-  private normalizeModel(model: string): string {
-    // Normalize model name
-    let normalized = model
-      .toUpperCase()
-      .trim()
-      .replace(/\s+/g, ' ') // Multiple spaces to single space
-      .replace(/[^\w\s\-\.]/g, '') // Remove special characters except hyphen, period
-      .replace(/\s*\-\s*/g, '-') // Normalize hyphens
-      .replace(/\s*\.\s*/g, '.'); // Normalize periods
-
-    // Remove common suffixes that might not match FIPE
-    normalized = normalized
-      .replace(/\s+(EDITION|VERSAO|VERSION)$/i, '')
-      .trim();
-
-    return normalized;
   }
 }
 
