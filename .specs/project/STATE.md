@@ -27,6 +27,7 @@
 | 2026-04-13 | F-02 T8 complete: README extended with Inmetro instructions. |
 | 2026-04-13 | F-02 complete: Inmetro PBE ETL pipeline. |
 | 2026-04-14 | F-03 started: Vehicle catalog cross-reference spec and tasks created. |
+| 2026-04-14 | F-03 T1 complete: unified vehicles table schema with indexes. |
 
 ---
 
