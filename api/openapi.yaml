@@ -1,0 +1,387 @@
+openapi: 3.0.3
+info:
+  title: iMotors API
+  description: |
+    iMotors REST API for vehicle catalog queries and TCO-based recommendations.
+    
+    This API provides endpoints to:
+    - Query the unified vehicle catalog (FIPE + Inmetro data)
+    - Get personalized vehicle recommendations based on TCO calculations
+  version: 1.0.0
+  contact:
+    name: iMotors API Support
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development server
+  - url: https://api.imotors.com/api/v1
+    description: Production server
+
+paths:
+  /vehicles:
+    get:
+      summary: Query vehicles from the unified catalog
+      description: Retrieve a paginated list of vehicles with optional filters
+      operationId: getVehicles
+      tags:
+        - Vehicles
+      parameters:
+        - name: brand
+          in: query
+          description: Filter by vehicle brand
+          required: false
+          schema:
+            type: string
+          example: TOYOTA
+        - name: category
+          in: query
+          description: Filter by vehicle category
+          required: false
+          schema:
+            type: string
+            enum: [hatchback, sedan, suv, pickup, minivan, coupe, conversivel]
+          example: hatchback
+        - name: fuel_type
+          in: query
+          description: Filter by fuel type
+          required: false
+          schema:
+            type: string
+            enum: [gasolina, etanol, flex, diesel, hibrido, eletrico]
+          example: flex
+        - name: year_min
+          in: query
+          description: Minimum model year
+          required: false
+          schema:
+            type: integer
+          example: 2020
+        - name: year_max
+          in: query
+          description: Maximum model year
+          required: false
+          schema:
+            type: integer
+          example: 2024
+        - name: price_min
+          in: query
+          description: Minimum price
+          required: false
+          schema:
+            type: number
+            format: float
+          example: 50000
+        - name: price_max
+          in: query
+          description: Maximum price
+          required: false
+          schema:
+            type: number
+            format: float
+          example: 150000
+        - name: limit
+          in: query
+          description: Number of results to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+          example: 50
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Vehicle'
+                  pagination:
+                    type: object
+                    properties:
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+                      total:
+                        type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicles/{fipe_code}:
+    get:
+      summary: Get a single vehicle by FIPE code
+      description: Retrieve detailed information for a specific vehicle
+      operationId: getVehicleByFipeCode
+      tags:
+        - Vehicles
+      parameters:
+        - name: fipe_code
+          in: path
+          description: FIPE vehicle code
+          required: true
+          schema:
+            type: string
+          example: 001001-0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Vehicle not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /recommendations:
+    post:
+      summary: Get personalized vehicle recommendations
+      description: Accept user constraints and return ranked vehicle recommendations with TCO breakdown
+      operationId: getRecommendations
+      tags:
+        - Recommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Check service and database connectivity
+      operationId: healthCheck
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  database:
+                    type: string
+                    example: connected
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        fipe_code:
+          type: string
+          example: 001001-0
+        brand:
+          type: string
+          example: TOYOTA
+        model:
+          type: string
+          example: COROLLA
+        year:
+          type: integer
+          example: 2023
+        fuel_type:
+          type: string
+          enum: [gasolina, etanol, flex, diesel, hibrido, eletrico]
+          example: flex
+        price:
+          type: number
+          format: float
+          example: 120000
+          nullable: true
+        city_km_l:
+          type: number
+          format: float
+          example: 12.5
+          nullable: true
+        highway_km_l:
+          type: number
+          format: float
+          example: 15.2
+          nullable: true
+        efficiency_rating:
+          type: string
+          example: A
+          nullable: true
+        match_confidence:
+          type: string
+          enum: [exact, fuzzy, manual]
+          example: exact
+
+    RecommendationRequest:
+      type: object
+      required:
+        - budget_monthly
+        - mileage_annual_km
+        - city_highway_ratio
+        - state
+      properties:
+        budget_monthly:
+          type: number
+          format: float
+          minimum: 500
+          maximum: 20000
+          description: Monthly budget in BRL
+          example: 3000
+        mileage_annual_km:
+          type: integer
+          minimum: 1000
+          maximum: 100000
+          description: Annual mileage in kilometers
+          example: 15000
+        city_highway_ratio:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Ratio of city to highway driving (0-1)
+          example: 0.7
+        state:
+          type: string
+          enum: [AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO]
+          description: Brazilian state code
+          example: SP
+        category:
+          type: string
+          enum: [hatchback, sedan, suv, pickup, minivan, coupe, conversivel]
+          description: Vehicle category preference
+          example: hatchback
+        fuel_preference:
+          type: string
+          enum: [gasolina, etanol, flex, diesel, hibrido, eletrico]
+          description: Fuel type preference
+          example: flex
+
+    RecommendationResponse:
+      type: object
+      properties:
+        recommendations:
+          type: array
+          maxItems: 3
+          items:
+            type: object
+            properties:
+              rank:
+                type: integer
+                minimum: 1
+                maximum: 3
+              vehicle:
+                $ref: '#/components/schemas/Vehicle'
+              tco_monthly:
+                type: number
+                format: float
+                description: Total cost of ownership per month
+                example: 2850
+              breakdown:
+                type: object
+                properties:
+                  depreciation_monthly:
+                    type: number
+                    format: float
+                    description: Monthly depreciation cost
+                    example: 1200
+                  fuel_cost_monthly:
+                    type: number
+                    format: float
+                    description: Monthly fuel cost
+                    example: 800
+                  ipva_monthly:
+                    type: number
+                    format: float
+                    description: Monthly IPVA tax
+                    example: 150
+                  insurance_monthly:
+                    type: number
+                    format: float
+                    description: Monthly insurance cost
+                    example: 500
+                  maintenance_monthly:
+                    type: number
+                    format: float
+                    description: Monthly maintenance cost
+                    example: 200
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Invalid request
+        message:
+          type: string
+          example: budget_monthly must be between 500 and 20000
+        code:
+          type: string
+          example: VALIDATION_ERROR
+
+tags:
+  - name: Vehicles
+    description: Vehicle catalog endpoints
+  - name: Recommendations
+    description: TCO-based recommendation endpoints
+  - name: Health
+    description: Health check and monitoring endpoints

@@ -9,12 +9,12 @@
 
 | ID | Task | Est | Depends | Gate | Status |
 |---|---|---|---|---|---|
-| T1 | Create OpenAPI YAML file structure | 0.5h | - | quick | `[ ] Not started` |
-| T2 | Define vehicle catalog endpoints | 1h | T1 | quick | `[ ] Not started` |
-| T3 | Define recommendation endpoint | 1h | T1 | quick | `[ ] Not started` |
-| T4 | Define data models and schemas | 1h | T2, T3 | quick | `[ ] Not started` |
-| T5 | Define error responses and status codes | 0.5h | T2, T3 | quick | `[ ] Not started` |
-| T6 | Add examples and documentation | 1h | T4 | quick | `[ ] Not started` |
+| T1 | Create OpenAPI YAML file structure | 0.5h | - | quick | `[x] Complete` |
+| T2 | Define vehicle catalog endpoints | 1h | T1 | quick | `[x] Complete` |
+| T3 | Define recommendation endpoint | 1h | T1 | quick | `[x] Complete` |
+| T4 | Define data models and schemas | 1h | T2, T3 | quick | `[x] Complete` |
+| T5 | Define error responses and status codes | 0.5h | T2, T3 | quick | `[x] Complete` |
+| T6 | Add examples and documentation | 1h | T4 | quick | `[x] Complete` |
 | T7 | Validate OpenAPI spec | 0.5h | T6 | build | `[ ] Not started` |
 | T8 | Generate server stub to verify | 0.5h | T7 | build | `[ ] Not started` |
 
