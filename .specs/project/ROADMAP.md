@@ -26,7 +26,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
-| F-04 | OpenAPI spec design | Define all endpoints, request/response schemas, error contracts — before any code | `[ ] Not started` |
+| F-04 | OpenAPI spec design | Define all endpoints, request/response schemas, error contracts — before any code | `[~] In progress` |
 | F-05 | TCO calculation engine | Core domain logic: depreciation, fuel cost, IPVA, insurance estimate, maintenance estimate | `[ ] Not started` |
 | F-06 | Recommendation API | Accept user constraints → query vehicle catalog → rank by TCO → return Top 3 with breakdown | `[ ] Not started` |
 
