@@ -8,7 +8,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 ## Milestones
 
-### M1 — Data Foundation `[ ]`
+### M1 — Data Foundation `[x]`
 *The proprietary dataset is the moat. Everything else depends on it.*
 
 | # | Feature | Scope | Status |
@@ -21,7 +21,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 ---
 
-### M2 — Backend API `[ ]`
+### M2 — Backend API `[x]`
 *The calculation engine and API contract.*
 
 | # | Feature | Scope | Status |
@@ -34,7 +34,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 ---
 
-### M3 — Frontend `[ ]`
+### M3 — Frontend `[x]`
 *The user-facing experience.*
 
 | # | Feature | Scope | Status |
