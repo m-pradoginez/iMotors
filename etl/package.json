@@ -11,6 +11,10 @@
     "test:watch": "jest --watch",
     "db:migrate": "ts-node src/db/migrate.ts",
     "etl:run": "ts-node src/index.ts",
+    "pipeline:fipe": "ts-node src/pipeline/fipe.ts",
+    "pipeline:inmetro": "ts-node src/pipeline/inmetro.ts",
+    "pipeline:cross-reference": "ts-node src/pipeline/crossReference.ts",
+    "validate": "ts-node src/db/validateData.ts || echo 'Validation script not yet implemented'",
     "db:count:vehicles": "psql $DATABASE_URL -c 'SELECT COUNT(*) FROM vehicles;'"
   },
   "keywords": ["etl", "fipe", "vehicles"],

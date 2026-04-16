@@ -1,0 +1,262 @@
+name: Monthly ETL Pipeline
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'  # 1st of month at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      skip_fipe:
+        description: 'Skip FIPE ETL (useful if FIPE data is unchanged)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      skip_inmetro:
+        description: 'Skip Inmetro ETL (useful if efficiency data is unchanged)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # Job 1: FIPE ETL - Fetch latest vehicle prices from Brasil API
+  fipe-etl:
+    if: github.event.inputs.skip_fipe != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: etl/package-lock.json
+
+      - name: Install ETL dependencies
+        working-directory: ./etl
+        run: npm ci
+
+      - name: Run FIPE ETL pipeline
+        working-directory: ./etl
+        run: npm run pipeline:fipe
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NODE_ENV: production
+
+      - name: Upload FIPE ETL logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fipe-etl-logs-${{ github.run_id }}
+          path: etl/logs/
+          retention-days: 30
+
+  # Job 2: Inmetro ETL - Fetch latest fuel efficiency data
+  inmetro-etl:
+    if: github.event.inputs.skip_inmetro != 'true'
+    needs: fipe-etl
+    if: always() && (needs.fipe-etl.result == 'success' || needs.fipe-etl.result == 'skipped') && github.event.inputs.skip_inmetro != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: etl/package-lock.json
+
+      - name: Install ETL dependencies
+        working-directory: ./etl
+        run: npm ci
+
+      - name: Run Inmetro ETL pipeline
+        working-directory: ./etl
+        run: npm run pipeline:inmetro
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NODE_ENV: production
+
+      - name: Upload Inmetro ETL logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: inmetro-etl-logs-${{ github.run_id }}
+          path: etl/logs/
+          retention-days: 30
+
+  # Job 3: Cross-reference - Match FIPE and Inmetro data
+  cross-reference:
+    needs: [fipe-etl, inmetro-etl]
+    if: always() && (needs.fipe-etl.result == 'success' || needs.fipe-etl.result == 'skipped') && (needs.inmetro-etl.result == 'success' || needs.inmetro-etl.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: etl/package-lock.json
+
+      - name: Install ETL dependencies
+        working-directory: ./etl
+        run: npm ci
+
+      - name: Run Cross-reference pipeline
+        working-directory: ./etl
+        run: npm run pipeline:cross-reference
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NODE_ENV: production
+
+      - name: Upload Cross-reference logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cross-ref-logs-${{ github.run_id }}
+          path: etl/logs/
+          retention-days: 30
+
+  # Job 4: Validate - Check data quality
+  validate:
+    needs: cross-reference
+    if: always() && needs.cross-reference.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: etl/package-lock.json
+
+      - name: Install ETL dependencies
+        working-directory: ./etl
+        run: npm ci
+
+      - name: Run data validation
+        working-directory: ./etl
+        run: npm run validate
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NODE_ENV: production
+
+  # Job 5: Notify - Send status notification
+  notify:
+    needs: [fipe-etl, inmetro-etl, cross-reference, validate]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Slack on success
+        if: needs.validate.result == 'success'
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "✅ ETL Pipeline Complete",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "✅ Monthly ETL Pipeline Complete"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*FIPE ETL:* ${{ needs.fipe-etl.result }}\n*Inmetro ETL:* ${{ needs.inmetro-etl.result }}\n*Cross-reference:* ${{ needs.cross-reference.result }}\n*Validation:* ${{ needs.validate.result }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Run ID:* ${{ github.run_id }}\n*Date:* ${{ github.event.repository.updated_at }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Logs"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: needs.validate.result != 'success'
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "❌ ETL Pipeline Failed",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "❌ Monthly ETL Pipeline Failed"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*FIPE ETL:* ${{ needs.fipe-etl.result }}\n*Inmetro ETL:* ${{ needs.inmetro-etl.result }}\n*Cross-reference:* ${{ needs.cross-reference.result }}\n*Validation:* ${{ needs.validate.result }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Run ID:* ${{ github.run_id }}\n*Date:* ${{ github.event.repository.updated_at }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Logs"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "style": "danger"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }

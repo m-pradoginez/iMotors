@@ -68,17 +68,20 @@
 | D-04 | API-first design — OpenAPI spec before backend code | Enables parallel frontend/backend development and clear contract | 2026-04-12 |
 | D-05 | ETL pre-populates DB offline — no live scraping | Legal/compliance constraint; FIPE + Inmetro are public datasets | 2026-04-12 |
 | D-06 | Use Neon.tech for PostgreSQL hosting | Better branching for ETL workflows and serverless scaling | 2026-04-13 |
+| D-07 | Backend language: Node.js + TypeScript | Faster cold starts on free tier; single language across ETL and API reduces context switching | 2026-04-15 |
+| D-08 | TCO formula includes all 5 components | Depreciation, fuel, IPVA, insurance, maintenance all included for comprehensive cost picture | 2026-04-15 |
+| D-09 | FIPE ↔ Inmetro matching: hybrid approach | Exact matching for clear cases + fuzzy matching for variations + manual mapping as fallback | 2026-04-14 |
 
 ---
 
 ## Open Questions
 
-| ID | Question | Context |
-|---|---|---|
-| Q-01 | Final backend language: .NET Core (C#) vs Node.js? | Both are valid. C# has stronger typing for domain-heavy TCO logic; Node.js has faster cold starts on free tier hosts. Needs decision before F-04 (OpenAPI spec). |
-| Q-02 | Final DB host: Neon.tech vs Supabase? | Both offer PostgreSQL free tier. Supabase adds a built-in REST API; Neon has better branching for ETL workflows. |
-| Q-03 | TCO formula: which cost components to include in v1? | Minimum: fuel, IPVA, DPVAT/insurance estimate. Optional: maintenance reserves, depreciation curve. Needs decision before F-05. |
-| Q-04 | How to handle FIPE ↔ Inmetro model name mismatches? | FIPE and Inmetro use different naming conventions. Fuzzy matching? Manual curated mapping table? Needs strategy before F-03. |
+| ID | Question | Context | Status |
+|---|---|---|---|
+| Q-01 | ~~Final backend language: .NET Core (C#) vs Node.js?~~ | **Decision: Node.js + TypeScript** (see D-07). Rationale: Faster cold starts on free tier, single language across ETL and API. | ✅ Resolved 2026-04-15 |
+| Q-02 | Final DB host: Neon.tech vs Supabase? | Both offer PostgreSQL free tier. Supabase adds a built-in REST API; Neon has better branching for ETL workflows. | ✅ Resolved 2026-04-13 - Neon.tech |
+| Q-03 | ~~TCO formula: which cost components to include in v1?~~ | **Decision: All 5 components** (see D-08). Includes: depreciation, fuel cost, IPVA, insurance, maintenance. | ✅ Resolved 2026-04-15 |
+| Q-04 | ~~How to handle FIPE ↔ Inmetro model name mismatches?~~ | **Decision: Hybrid approach** (see D-09). Exact matching + fuzzy matching + manual mapping capability. | ✅ Resolved 2026-04-14 |
 
 ---
 
@@ -92,13 +95,13 @@
 
 | ID | Todo | Feature |
 |---|---|---|
-| T-01 | Decide backend language (Q-01) | Before F-04 |
-| T-02 | [x] Decide DB host (Q-02) | Done |
+| T-01 | [x] Decide backend language (Q-01) | Done - Node.js + TypeScript (D-07) |
+| T-02 | [x] Decide DB host (Q-02) | Done - Neon.tech (D-06) |
+| T-03 | [x] Define TCO formula components (Q-03) | Done - All 5 components (D-08) |
+| T-04 | [x] Define FIPE ↔ Inmetro matching strategy (Q-04) | Done - Hybrid approach (D-09) |
 | T-05 | [x] Create F-01 design.md | Done |
 | T-06 | [x] Create F-01 tasks.md | Done |
 | T-08 | [x] E2E validation + README | Done (partial - rate limited) |
-| T-03 | Define TCO formula components (Q-03) | Before F-05 |
-| T-04 | Define FIPE ↔ Inmetro matching strategy (Q-04) | Before F-03 |
 
 ---
 
