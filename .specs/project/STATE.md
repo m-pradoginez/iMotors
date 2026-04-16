@@ -55,6 +55,7 @@
 | 2026-04-15 | F-08 complete: TCO report page with Top 3 recommendations and cost breakdown. |
 | 2026-04-15 | F-09 complete: Webmotors/OLX redirect with UTM-tagged URLs. |
 | 2026-04-15 | M3 complete: Frontend milestone (F-07, F-08, F-09). |
+| 2026-04-16 | Architectural decision: Refactored F-07 (Frontend Form) into a Multi-step Conversational Wizard (Light Mode) to reduce cognitive friction and improve conversion rates. |
 
 ---
 

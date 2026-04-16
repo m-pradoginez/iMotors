@@ -52,6 +52,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
+| F-10.1 | UI/UX Refactor | Implement Multi-step Wizard and clean Light Mode visual identity | `[ ] Not started` |
 | F-10 | End-to-end validation | Full funnel test across budget/mileage/category combinations; edge cases | `[ ] Not started` |
 | F-11 | Deployment & CI | Frontend on Vercel/Netlify + Backend on Render/Fly.io + DB on Neon/Supabase; basic CI pipeline | `[ ] Not started` |
 | F-12 | SEO & sharing | Open Graph tags, share-friendly report URLs, basic meta for discoverability | `[ ] Not started` |
