@@ -39,9 +39,9 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
-| F-07 | Constraint input form | Multi-step or single-page form collecting budget, mileage, city/highway ratio, state, category | `[ ] Not started` |
-| F-08 | TCO report page | Display Top 3 recommendations with cost breakdown, visual comparison, and redirection links | `[ ] Not started` |
-| F-09 | Webmotors/OLX redirect | Generate UTM-tagged or search URLs for each recommended vehicle | `[ ] Not started` |
+| F-07 | Constraint input form | Multi-step or single-page form collecting budget, mileage, city/highway ratio, state, category | `[x] Complete` |
+| F-08 | TCO report page | Display Top 3 recommendations with cost breakdown, visual comparison, and redirection links | `[x] Complete` |
+| F-09 | Webmotors/OLX redirect | Generate UTM-tagged or search URLs for each recommended vehicle | `[x] Complete` |
 
 **Milestone done when:** A user can complete the form, receive a rendered report with Top 3 vehicles, and click through to an external search.
 

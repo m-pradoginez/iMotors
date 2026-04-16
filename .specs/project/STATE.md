@@ -50,6 +50,11 @@
 | 2026-04-15 | F-06 T1-T9 complete: recommendation service with validation, query, TCO integration, ranking, controller, and tests (64 tests passing). |
 | 2026-04-15 | F-06 complete: Recommendation API with 64 tests passing. |
 | 2026-04-15 | M2 complete: Backend API milestone (F-04, F-05, F-06). |
+| 2026-04-15 | M3 started: Frontend implementation. |
+| 2026-04-15 | F-07 complete: Constraint input form with all fields and validation. |
+| 2026-04-15 | F-08 complete: TCO report page with Top 3 recommendations and cost breakdown. |
+| 2026-04-15 | F-09 complete: Webmotors/OLX redirect with UTM-tagged URLs. |
+| 2026-04-15 | M3 complete: Frontend milestone (F-07, F-08, F-09). |
 
 ---
 
