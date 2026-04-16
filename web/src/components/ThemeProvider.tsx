@@ -77,11 +77,6 @@ export function ThemeProvider({
     setThemeState(newTheme);
   };
 
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   const value = {
     theme,
     setTheme,
