@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, type Variants } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Wallet, 
   Gauge, 
@@ -8,181 +8,48 @@ import {
   Car, 
   Fuel, 
   Search,
-  ChevronDown,
+  ChevronRight,
+  ChevronLeft,
   Building2,
-  Road
+  Road,
+  Sparkles,
+  CheckCircle2
 } from 'lucide-react';
-import { ThemeToggle } from '../components/ThemeToggle';
+import { PremiumSlider } from '../components/PremiumSlider';
+import { PremiumSelect } from '../components/PremiumSelect';
+import { Button } from '../components/Button';
 import { BRAZILIAN_STATES, VEHICLE_CATEGORIES, FUEL_TYPES, formatCurrency } from '../lib/utils';
 import type { RecommendationRequest, BrazilianState, VehicleCategory, FuelType } from '../types/api';
 
-// Animation variants
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1
-    }
-  }
+const steps = [
+  { id: 'budget', title: 'Orçamento & Uso', icon: Wallet },
+  { id: 'profile', title: 'Perfil & Estilo', icon: Car },
+  { id: 'location', title: 'Localização', icon: MapPin },
+];
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 50 : -50,
+    opacity: 0
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 50 : -50,
+    opacity: 0
+  })
 };
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4 }
-  }
-};
-
-interface SliderWithInputProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (value: number) => void;
-  formatValue?: (value: number) => string;
-  icon: React.ReactNode;
-  helperText?: string;
-}
-
-function SliderWithInput({ label, value, min, max, step, onChange, formatValue, icon, helperText }: SliderWithInputProps) {
-  const displayValue = formatValue ? formatValue(value) : value.toString();
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const numValue = parseInt(e.target.value.replace(/\D/g, ''), 10) || min;
-    const clamped = Math.max(min, Math.min(max, numValue));
-    onChange(clamped);
-  };
-
-  const percentage = ((value - min) / (max - min)) * 100;
-
-  return (
-    <div className="glass-card p-5 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary">
-            {icon}
-          </div>
-          <span className="font-semibold text-foreground">{label}</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={displayValue}
-            onChange={handleInputChange}
-            className="w-28 text-right px-2 py-1 text-sm font-semibold bg-transparent border-b border-border focus:border-primary focus:outline-none transition-colors"
-          />
-        </div>
-      </div>
-      
-      <div className="relative pt-1">
-        <div className="relative h-2 bg-muted rounded-full overflow-hidden">
-          <motion.div 
-            className="absolute h-full bg-gradient-to-r from-primary to-primary-light rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 0.3 }}
-          />
-        </div>
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="absolute w-full h-full top-0 opacity-0 cursor-pointer"
-        />
-        <div className="flex justify-between mt-1 text-xs text-muted-foreground">
-          <span>{formatValue ? formatValue(min) : min}</span>
-          <span>{formatValue ? formatValue(max) : max}</span>
-        </div>
-      </div>
-      
-      {helperText && (
-        <p className="text-xs text-muted-foreground">{helperText}</p>
-      )}
-    </div>
-  );
-}
-
-interface CustomSelectProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-  placeholder?: string;
-  icon: React.ReactNode;
-}
-
-function CustomSelect({ label, value, onChange, options, placeholder, icon }: CustomSelectProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const selected = options.find(o => o.value === value);
-
-  return (
-    <div className="relative">
-      <div className="glass-card p-4">
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="p-1.5 rounded-md bg-primary/10 text-primary">
-            {icon}
-          </div>
-          <span className="text-sm font-medium text-muted-foreground">{label}</span>
-        </div>
-        
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
-        >
-          <span className="font-semibold text-foreground">
-            {selected?.label || placeholder || 'Selecionar...'}
-          </span>
-          <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-        </button>
-      </div>
-      
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="absolute z-50 w-full mt-1 glass-card max-h-60 overflow-auto"
-        >
-          {options.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-              className={`w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors ${
-                value === option.value ? 'bg-primary/10 text-primary' : ''
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </motion.div>
-      )}
-      
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-    </div>
-  );
-}
 
 export function ConsultantForm() {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  
   const [formData, setFormData] = useState<RecommendationRequest>({
     budget_monthly: 2500,
     mileage_annual_km: 15000,
@@ -190,190 +57,272 @@ export function ConsultantForm() {
     state: 'SP',
   });
 
+  const nextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setDirection(1);
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setDirection(-1);
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     sessionStorage.setItem('recommendationRequest', JSON.stringify(formData));
     
+    // Simulate processing for "premium" feel
     setTimeout(() => {
       navigate('/report');
-    }, 500);
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-950 py-8 px-4">
-      <motion.div 
-        className="max-w-2xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="text-center mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="w-10" /> {/* Spacer for alignment */}
-            <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10">
-              <Car className="h-8 w-8 text-primary" />
-            </div>
-            <ThemeToggle />
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            Encontre seu carro ideal
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Consultoria especializada em TCO (Custo Total de Propriedade)
-          </p>
-        </motion.div>
+    <div className="min-h-[calc(100vh-80px)] pt-12 pb-24 px-4 relative overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full -z-10">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full" />
+        <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/5 blur-[100px] rounded-full" />
+      </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <motion.div variants={itemVariants}>
-            <SliderWithInput
-              label="Orçamento mensal"
-              value={formData.budget_monthly}
-              min={500}
-              max={10000}
-              step={100}
-              onChange={(value) => setFormData({ ...formData, budget_monthly: value })}
-              formatValue={formatCurrency}
-              icon={<Wallet className="h-5 w-5" />}
-              helperText="Inclui: combustível, IPVA, seguro, manutenção e depreciação"
-            />
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <SliderWithInput
-              label="Quilometragem anual"
-              value={formData.mileage_annual_km}
-              min={1000}
-              max={50000}
-              step={1000}
-              onChange={(value) => setFormData({ ...formData, mileage_annual_km: value })}
-              formatValue={(v) => `${(v / 1000).toFixed(0)}.000 km`}
-              icon={<Gauge className="h-5 w-5" />}
-              helperText="Estimativa de km rodados por ano"
-            />
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <div className="glass-card p-5">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                  <Road className="h-5 w-5" />
+      <div className="max-w-3xl mx-auto space-y-12">
+        {/* Progress Header */}
+        <div className="space-y-6">
+          <div className="flex justify-between items-center px-2">
+            {steps.map((step, idx) => (
+              <div 
+                key={step.id} 
+                className={`flex flex-col items-center space-y-2 transition-all duration-500 ${
+                  idx <= currentStep ? 'opacity-100' : 'opacity-30'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                  idx === currentStep 
+                    ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 scale-110' 
+                    : idx < currentStep 
+                      ? 'bg-emerald-500/20 text-emerald-600'
+                      : 'bg-muted text-muted-foreground'
+                }`}>
+                  {idx < currentStep ? <CheckCircle2 className="w-6 h-6" /> : <step.icon className="w-5 h-5" />}
                 </div>
-                <span className="font-semibold text-foreground">Perfil de uso</span>
-              </div>
-              
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <Building2 className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Cidade</span>
-                </div>
-                <span className="text-sm font-semibold text-foreground">
-                  {Math.round(formData.city_highway_ratio * 100)}%
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground">
+                  {step.title}
                 </span>
-                <div className="flex items-center space-x-2">
-                  <Road className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Estrada</span>
-                </div>
               </div>
-              
-              <div className="relative pt-1">
-                <div className="relative h-2 bg-muted rounded-full overflow-hidden">
-                  <motion.div 
-                    className="absolute h-full bg-gradient-to-r from-emerald-500 to-primary rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${formData.city_highway_ratio * 100}%` }}
-                    transition={{ duration: 0.3 }}
+            ))}
+          </div>
+          <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-emerald-500 rounded-full"
+              initial={{ width: '0%' }}
+              animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+              transition={{ duration: 0.5, ease: "circOut" }}
+            />
+          </div>
+        </div>
+
+        {/* Form Container */}
+        <div className="relative">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentStep}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-8"
+            >
+              {currentStep === 0 && (
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-black text-foreground tracking-tight">Qual seu potencial de investimento?</h2>
+                    <p className="text-muted-foreground leading-relaxed">Defina quanto você planeja gastar mensalmente com seu novo veículo.</p>
+                  </div>
+                  
+                  <PremiumSlider
+                    label="Orçamento mensal"
+                    value={formData.budget_monthly}
+                    min={500}
+                    max={10000}
+                    step={100}
+                    onChange={(v) => setFormData({ ...formData, budget_monthly: v })}
+                    formatValue={formatCurrency}
+                    icon={<Wallet className="h-5 w-5" />}
+                    helperText="Inclui parcelas, combustível, seguro e manutenção"
+                  />
+
+                  <PremiumSlider
+                    label="Uso anual estimado"
+                    value={formData.mileage_annual_km}
+                    min={1000}
+                    max={50000}
+                    step={1000}
+                    onChange={(v) => setFormData({ ...formData, mileage_annual_km: v })}
+                    formatValue={(v) => `${(v / 1000).toFixed(0)}.000 km`}
+                    icon={<Gauge className="h-5 w-5" />}
+                    helperText="Média de quilometragem rodada por ano"
+                  />
+
+                  <div className="p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl flex items-start space-x-4">
+                    <div className="p-2 rounded-lg bg-white dark:bg-slate-900 shadow-sm">
+                      <Sparkles className="h-5 w-5 text-emerald-500" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-bold text-foreground">Dica de Especialista</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Um orçamento de <span className="text-emerald-500 font-bold">{formatCurrency(formData.budget_monthly)}</span> permite manter com tranquilidade veículos de até <span className="text-foreground font-bold">{formatCurrency(formData.budget_monthly * 48)}</span> de valor de mercado.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 1 && (
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-black text-foreground tracking-tight">Qual o seu estilo de condução?</h2>
+                    <p className="text-muted-foreground leading-relaxed">Isso nos ajuda a calcular o consumo de combustível e a depreciação ideal.</p>
+                  </div>
+
+                  <div className="glass-card p-6 space-y-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500">
+                        <Road className="h-5 w-5" />
+                      </div>
+                      <span className="font-bold text-foreground tracking-tight">Perfil de Uso (Cidade vs. Estrada)</span>
+                    </div>
+
+                    <div className="space-y-8">
+                      <div className="relative pt-2">
+                        <div className="relative h-3 bg-muted rounded-full overflow-hidden">
+                          <motion.div 
+                            className="absolute h-full bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full"
+                            animate={{ width: `${formData.city_highway_ratio * 100}%` }}
+                          />
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={100}
+                          step={5}
+                          value={formData.city_highway_ratio * 100}
+                          onChange={(e) => setFormData({ ...formData, city_highway_ratio: Number(e.target.value) / 100 })}
+                          className="absolute w-full h-full top-0 opacity-0 cursor-pointer z-10"
+                        />
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-col items-start">
+                          <div className="flex items-center space-x-2 text-emerald-500">
+                            <Building2 className="w-4 h-4" />
+                            <span className="text-xs font-black uppercase tracking-widest">Predominante Urbano</span>
+                          </div>
+                          <span className="text-2xl font-black text-foreground">{Math.round(formData.city_highway_ratio * 100)}%</span>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <div className="flex items-center space-x-2 text-blue-500">
+                            <span className="text-xs font-black uppercase tracking-widest">Predominante Rodoviário</span>
+                            <Road className="w-4 h-4" />
+                          </div>
+                          <span className="text-2xl font-black text-foreground">{Math.round((1 - formData.city_highway_ratio) * 100)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <PremiumSelect
+                    label="Categoria do Veículo"
+                    value={formData.category || ''}
+                    onChange={(v) => setFormData({ ...formData, category: (v as VehicleCategory) || undefined })}
+                    options={[{ value: '', label: 'Qualquer Categoria' }, ...VEHICLE_CATEGORIES]}
+                    icon={<Car className="h-5 w-5" />}
+                    placeholder="Selecione uma preferência"
                   />
                 </div>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={Math.round(formData.city_highway_ratio * 100)}
-                  onChange={(e) => setFormData({ ...formData, city_highway_ratio: Number(e.target.value) / 100 })}
-                  className="absolute w-full h-full top-0 opacity-0 cursor-pointer"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <CustomSelect
-              label="Estado"
-              value={formData.state}
-              onChange={(value) => setFormData({ ...formData, state: value as BrazilianState })}
-              options={BRAZILIAN_STATES.map(s => ({ value: s.code, label: s.name }))}
-              placeholder="Selecione o estado"
-              icon={<MapPin className="h-4 w-4" />}
-            />
-
-            <CustomSelect
-              label="Categoria (opcional)"
-              value={formData.category || ''}
-              onChange={(value) => setFormData({ ...formData, category: (value as VehicleCategory) || undefined })}
-              options={[{ value: '', label: 'Todas as categorias' }, ...VEHICLE_CATEGORIES]}
-              placeholder="Todas as categorias"
-              icon={<Car className="h-4 w-4" />}
-            />
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <CustomSelect
-              label="Combustível preferido (opcional)"
-              value={formData.fuel_preference || ''}
-              onChange={(value) => setFormData({ ...formData, fuel_preference: (value as FuelType) || undefined })}
-              options={[{ value: '', label: 'Qualquer combustível' }, ...FUEL_TYPES]}
-              placeholder="Qualquer combustível"
-              icon={<Fuel className="h-4 w-4" />}
-            />
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold text-lg shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-            >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                  <span>Buscando...</span>
-                </>
-              ) : (
-                <>
-                  <Search className="h-5 w-5" />
-                  <span>Buscar recomendações</span>
-                </>
               )}
-            </motion.button>
-          </motion.div>
-        </form>
 
-        {/* Trust Indicators */}
-        <motion.div 
-          variants={itemVariants}
-          className="mt-8 grid grid-cols-3 gap-4 text-center"
-        >
-          <div className="glass-card p-4">
-            <p className="text-2xl font-bold text-primary">100+</p>
-            <p className="text-xs text-muted-foreground">Veículos catalogados</p>
-          </div>
-          <div className="glass-card p-4">
-            <p className="text-2xl font-bold text-primary">5</p>
-            <p className="text-xs text-muted-foreground">Componentes TCO</p>
-          </div>
-          <div className="glass-card p-4">
-            <p className="text-2xl font-bold text-primary">FIPE</p>
-            <p className="text-xs text-muted-foreground">Preços atualizados</p>
-          </div>
-        </motion.div>
-      </motion.div>
+              {currentStep === 2 && (
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-black text-foreground tracking-tight">Detalhes finais</h2>
+                    <p className="text-muted-foreground leading-relaxed">Sua localização influencia no IPVA e os preços regionais.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <PremiumSelect
+                      label="Estado de Registro"
+                      value={formData.state}
+                      onChange={(v) => setFormData({ ...formData, state: v as BrazilianState })}
+                      options={BRAZILIAN_STATES.map(s => ({ value: s.code, label: s.name }))}
+                      icon={<MapPin className="h-5 w-5" />}
+                    />
+
+                    <PremiumSelect
+                      label="Tipo de Combustível"
+                      value={formData.fuel_preference || ''}
+                      onChange={(v) => setFormData({ ...formData, fuel_preference: (v as FuelType) || undefined })}
+                      options={[{ value: '', label: 'Qualquer um' }, ...FUEL_TYPES]}
+                      icon={<Fuel className="h-5 w-5" />}
+                    />
+                  </div>
+
+                  <div className="glass-card p-8 text-center space-y-6 border-emerald-500/20 bg-emerald-500/5">
+                    <div className="inline-flex p-4 rounded-3xl bg-emerald-500 text-white shadow-xl shadow-emerald-500/20">
+                      <Sparkles className="w-8 h-8" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-foreground">Tudo Pronto!</h3>
+                      <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
+                        Nossa IA vai cruzar mais de 1.200 modelos para encontrar as 3 melhores opções de TCO para você.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
+          <Button
+            variant="ghost"
+            onClick={prevStep}
+            className={`w-full sm:w-auto ${currentStep === 0 ? 'invisible' : ''}`}
+          >
+            <ChevronLeft className="mr-2 h-5 w-5" />
+            Voltar
+          </Button>
+
+          {currentStep === steps.length - 1 ? (
+            <Button
+              variant="premium"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+              className="w-full sm:w-auto h-16 px-12 text-lg rounded-[24px]"
+            >
+              <Search className="mr-2 h-5 w-5" />
+              Ver Recomendações
+            </Button>
+          ) : (
+            <Button
+              onClick={nextStep}
+              className="w-full sm:w-auto h-16 px-12 text-lg rounded-[24px]"
+            >
+              Continuar
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

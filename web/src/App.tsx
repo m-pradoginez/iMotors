@@ -1,18 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './components/ThemeProvider';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import LandingPage from './pages/LandingPage';
 import { ConsultantForm } from './pages/ConsultantForm';
 import { TCOReport } from './pages/TCOReport';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system">
-      <Router>
-        <Routes>
-          <Route path="/" element={<ConsultantForm />} />
-          <Route path="/report" element={<TCOReport />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/consultancy" element={<ConsultantForm />} />
+        <Route path="/report" element={<TCOReport />} />
+      </Routes>
+    </Layout>
   );
 }
 

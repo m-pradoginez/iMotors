@@ -76,7 +76,7 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
               
               <div className="flex space-x-3">
-                <Button onClick={this.handleReload} variant="primary">
+                <Button onClick={this.handleReload} variant="default">
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Tentar novamente
                 </Button>
