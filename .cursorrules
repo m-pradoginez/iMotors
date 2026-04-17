@@ -1,0 +1,18 @@
+# iMotors Project Rules
+
+## 1. Tech Stack & Styling
+- **Framework:** React (TypeScript) + Tailwind CSS.
+- **Visual Identity:** - Theme: Light Mode Only (Background: `#f8fafc`, Card: `#ffffff`).
+    - Palette: Slate (#0f172a) for text, Emerald (#10b981) for actions.
+    - Spacing: High padding/whitespace (`p-8` to `p-12`) is mandatory for cards.
+- **Components:** Use Lucide React for icons.
+
+## 2. Documentation Hygiene (CRITICAL)
+- **STATE.md**: Every architectural decision (like shifting to a Wizard) must be logged in the 'Session Log'.
+- **ROADMAP.md**: Update feature statuses (`[x]`) and add sub-tasks (e.g., F-10.1) when refining scope.
+- **Sync:** Do not finalize a task until the .md files reflect the current state.
+
+## 3. UI/UX Principles
+- **Zero-Friction:** Prioritize Multi-step Wizards over long forms.
+- **Precision:** Sliders must always be synchronized with numeric inputs.
+- **Trust:** Always include 'Verified Data' badges or trust indicators in the footer.
