@@ -32,7 +32,7 @@ Brazilian car buyers face fragmented, biased information. Classifieds show stick
 
 | Layer | Technology | Hosting |
 |---|---|---|
-| Frontend | React (TypeScript) | Vercel or Netlify (Free Tier) |
+| Frontend | React (TypeScript) + Tailwind CSS (Design System) | Vercel or Netlify (Free Tier) |
 | Backend / API | .NET Core (C#) or Node.js — Clean Architecture | Render or Fly.io (Free Tier) |
 | Database | PostgreSQL (Serverless) | Neon.tech or Supabase (Free Tier) |
 | API Design | OpenAPI Specification (API-first) | — |

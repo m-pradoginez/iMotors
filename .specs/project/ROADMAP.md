@@ -39,7 +39,7 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
-| F-07 | Constraint input form | Multi-step or single-page form collecting budget, mileage, city/highway ratio, state, category | `[x] Complete` |
+| F-07 | Constraint input form | Multi-step Conversational Wizard with Framer Motion transitions, educational tooltips, and real-time TCO feedback | `[x] Complete` |
 | F-08 | TCO report page | Display Top 3 recommendations with cost breakdown, visual comparison, and redirection links | `[x] Complete` |
 | F-09 | Webmotors/OLX redirect | Generate UTM-tagged or search URLs for each recommended vehicle | `[x] Complete` |
 
@@ -47,12 +47,12 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 
 ---
 
-### M4 — Polish & Deploy `[ ]`
+### M4 — Polish & Deploy `[~] In progress`
 *Production-ready on free tier.*
 
 | # | Feature | Scope | Status |
 |---|---|---|---|
-| F-10.1 | UI/UX Refactor | Implement Multi-step Wizard and clean Light Mode visual identity | `[ ] Not started` |
+| F-10.1 | Design System & UI Refactor | Implement Multi-step Wizard and clean Light Mode visual identity (Stabilized) | `[x] Complete` |
 | F-10 | End-to-end validation | Full funnel test across budget/mileage/category combinations; edge cases | `[ ] Not started` |
 | F-11 | Deployment & CI | Frontend on Vercel/Netlify + Backend on Render/Fly.io + DB on Neon/Supabase; basic CI pipeline | `[ ] Not started` |
 | F-12 | SEO & sharing | Open Graph tags, share-friendly report URLs, basic meta for discoverability | `[ ] Not started` |

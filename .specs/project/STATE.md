@@ -56,6 +56,12 @@
 | 2026-04-15 | F-09 complete: Webmotors/OLX redirect with UTM-tagged URLs. |
 | 2026-04-15 | M3 complete: Frontend milestone (F-07, F-08, F-09). |
 | 2026-04-16 | Architectural decision: Refactored F-07 (Frontend Form) into a Multi-step Conversational Wizard (Light Mode) to reduce cognitive friction and improve conversion rates. |
+| 2026-04-16 | UI Pivot & Design System: Created tailwind.config.js and refactored F-07 to a Multi-step Wizard (Light Mode) for better conversion. |
+| 2026-04-16 | UI Fix: Simplified index.css and standardized BudgetStep layout to fix rendering issues. |
+| 2026-04-16 | UI Pivot & Design System Refactor: Cleaned index.css, centered App.tsx, and rebuilt BudgetStep with opaque Light Mode and Slate/Emerald palette. |
+| 2026-04-16 | M4 Stabilizer: Hardened DB SSL connection ({rejectUnauthorized: true}), created API entry point (index.ts), and standardized Design System components (Button, Card, Slider). |
+| 2026-04-16 | Wizard Completion: Implemented UsageStep (Passo 2) and LocationStep (Passo 3), and orchestrated the full 3-step navigation flow in App.tsx. |
+| 2026-04-16 | UI/UX Enhancements: Added Framer Motion directional transitions, educational tooltips, real-time TCO feedback, and micro-interactions across all wizard steps. |
 
 ---
 
