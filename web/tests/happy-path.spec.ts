@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { mockRecommendationsApi } from './helpers/mockRecommendations';
 
 test('Happy path: Completes wizard and views Top 3 recommendations', async ({ page }) => {
   // Start at the home page or consultancy page
+  await mockRecommendationsApi(page);
   await page.goto('/consultancy');
 
   // Step 1: Budget

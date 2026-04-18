@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { mockRecommendationsApi } from './helpers/mockRecommendations';
 
 test('Filters: Selects specific category and fuel type successfully', async ({ page }) => {
+  await mockRecommendationsApi(page);
   await page.goto('/consultancy');
 
   // Step 1

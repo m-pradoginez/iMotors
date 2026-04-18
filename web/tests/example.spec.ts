@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { mockRecommendationsApi } from './helpers/mockRecommendations';
 
 test('Smoke: consultancy page renders and allows entering the flow', async ({ page }) => {
+  await mockRecommendationsApi(page);
   await page.goto('/consultancy');
 
   await expect(page.getByText('Qual seu potencial de investimento?')).toBeVisible();

@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { mockRecommendationsApi } from './helpers/mockRecommendations';
 
 test('Edge case: Displays no vehicles found error when budget is too low', async ({ page }) => {
+  await mockRecommendationsApi(page);
   await page.goto('/consultancy');
 
   await expect(page.getByText('Qual seu potencial de investimento?')).toBeVisible();
