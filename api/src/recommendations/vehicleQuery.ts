@@ -21,7 +21,7 @@ export async function queryVehicles(
       highway_km_l,
       efficiency_rating,
       match_confidence,
-      image_url
+      image_url_path
     FROM vehicles
     WHERE price IS NOT NULL
       AND city_km_l IS NOT NULL
@@ -67,6 +67,6 @@ export async function queryVehicles(
     highway_km_l: row.highway_km_l,
     efficiency_rating: row.efficiency_rating,
     match_confidence: row.match_confidence,
-    image_url: row.image_url,
+    image_url: row.image_url_path,
   }));
 }
