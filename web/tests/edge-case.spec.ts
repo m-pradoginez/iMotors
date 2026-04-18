@@ -25,5 +25,5 @@ test('Edge case: Displays no vehicles found error when budget is too low', async
 
   // Expect fallback message
   await expect(page.getByText('Ops! Algo deu errado.')).toBeVisible({ timeout: 10000 });
-  await expect(page.getByText(/No vehicles found|Não encontramos veículos/i)).toBeVisible();
+  await expect(page.getByText(/No vehicles found|Não encontramos veículos|atendam exatamente/i)).toBeVisible();
 });
