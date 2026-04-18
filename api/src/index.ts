@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { recommendationController } from './recommendations/recommendationController';
 import { testConnection } from './db/connection';
@@ -9,6 +10,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
+app.use(cors({
+  origin: /^http:\/\/localhost(:\d+)?$/,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 // Health check

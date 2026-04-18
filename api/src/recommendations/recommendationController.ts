@@ -42,6 +42,7 @@ export class RecommendationController {
       }
 
       // Internal server error
+      console.error('[RecommendationController] Unhandled error:', error);
       res.status(500).json({
         error: 'Internal server error',
         message: 'An unexpected error occurred while processing your request',
