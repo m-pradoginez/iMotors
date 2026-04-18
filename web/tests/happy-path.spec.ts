@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { mockRecommendationsApi } from './helpers/mockRecommendations';
 
 test('Happy path: Completes wizard and views Top 3 recommendations', async ({ page }) => {
   // Start at the home page or consultancy page
+  await mockRecommendationsApi(page);
   await page.goto('/consultancy');
 
   // Step 1: Budget
@@ -26,6 +28,6 @@ test('Happy path: Completes wizard and views Top 3 recommendations', async ({ pa
   // Skip loading assertion because it's too fast locally
 
   // Assert report page renders successfully
-  await expect(page.getByText('As Melhores Oportunidades')).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('heading', { name: /As Melhores/i })).toBeVisible({ timeout: 10000 });
   await expect(page.getByText('#1 Recomendação')).toBeVisible();
 });
