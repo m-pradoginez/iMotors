@@ -2,12 +2,12 @@
 -- This migration creates the baseline schema for iMotors with Supabase
 -- Vehicles table renamed from vehicles_unified with UUID primary key and media fields
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Enable UUID extension (Supabase uses pgcrypto by default)
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Vehicles table (formerly vehicles_unified)
 CREATE TABLE vehicles (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   fipe_code VARCHAR(50) UNIQUE NOT NULL,
   brand VARCHAR(100) NOT NULL,
   model VARCHAR(200) NOT NULL,
