@@ -68,23 +68,23 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 |---|---|---|---|
 | M5.1 | Infrastructure Reset | Supabase CLI Initialization; Baseline migration (UUID-based schema); Data migration via pg_dump | `[x] Complete` |
 | M5.2 | Media Sourcing Automation | Python scraper for Stellantis, VW, and GM; Integration with Supabase Storage `vehicle-media` bucket | `[x] Complete` |
-| M5.3 | Security & Access | RLS Policies: `anon` select access for `vehicles` and `storage` | `[x] Complete` |
+| M5.3 | Security & Access | RLS Policies: `anon` select access for `vehicles` and `storage`; service role full access for ETL/scraper | `[x] Complete` |
 
 **Milestone done when:** iMotors is running on Supabase with UUID primary keys and high-res press images served via Supabase Storage.
 
 **Implementation Details:**
-- **Infrastructure Migration**: Migrated from Neon to Supabase with global find/replace of all Neon references. Updated environment variables to use SUPABASE_DB_URL, SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY.
-- **Database Schema**: Created baseline migration with UUID primary keys for vehicles table. Added media fields: `image_url_path`, `legal_attribution` (default: 'Foto: Divulgação/Fabricante'), and `image_source_url`. Renamed `vehicles_unified` to `vehicles`.
+- **Infrastructure Migration**: Migrated from Neon to Supabase with global find/replace of all Neon references. Updated environment variables to use SUPABASE_DB_URL, SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY. Supabase CLI linked to remote project.
+- **Database Schema**: Created baseline migration with UUID primary keys using `gen_random_uuid()` for vehicles table. Added media fields: `image_url_path`, `legal_attribution` (default: 'Foto: Divulgação/Fabricante'), and `image_source_url`. Renamed `vehicles_unified` to `vehicles`.
 - **Media Automation**: Implemented Python-based scraping system in `media-automation/` directory with:
   - Base scraper class using BeautifulSoup for static content
   - Stellantis scraper for Fiat/Jeep brands (media.stellantis.com/br-pt/)
   - VW scraper for Volkswagen (vwnews.com.br)
   - GM scraper for Chevrolet (media.chevrolet.com.br)
   - Supabase Storage integration for uploading images to `vehicle-media` bucket
-  - Database manager for updating vehicles table with image references
+  - Database manager for updating vehicles table with image references using `fipe_code` + `model_year` as unique key
   - Prioritizes high-quality studio shots and press assets
   - Includes rate limiting and legal attribution compliance
-- **Security**: Implemented RLS policies for public read access on vehicles, fuel_efficiency, and fipe_prices tables.
+- **Security**: Implemented RLS policies for public read access on vehicles, fuel_efficiency, and fipe_prices tables. Added service role policies for full access (INSERT, UPDATE, DELETE) to enable ETL/scraper write operations.
 
 ---
 

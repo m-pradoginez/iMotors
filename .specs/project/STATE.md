@@ -64,6 +64,11 @@
 | 2026-04-16 | UI/UX Enhancements: Added Framer Motion directional transitions, educational tooltips, real-time TCO feedback, and micro-interactions across all wizard steps. |
 | 2026-04-16 | F-10 complete: End-to-end validation. Playwright installed and configured. E2E tests for Happy Path, Edge Case (Empty vehicles), and Filters written. |
 | 2026-04-17 | Major Architectural Pivot: Full migration from Neon.tech to Supabase to consolidate Auth, Database, and Storage. |
+| 2026-04-17 | Infrastructure Migration: Global find/replace of Neon references, environment variables updated to SUPABASE_DB_URL, SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY. |
+| 2026-04-17 | Schema Refactor: Primary keys converted from SERIAL to UUID using gen_random_uuid(), vehicles_unified renamed to vehicles, media fields added (image_url_path, legal_attribution, image_source_url). |
+| 2026-04-17 | RLS Implementation: Row Level Security enabled on all tables with public read access for anon users and full access for service role. |
+| 2026-04-17 | Storage Setup: vehicle-media bucket created with public access and RLS policies for service role operations. |
+| 2026-04-17 | Media Automation: Python scraping system implemented with scrapers for Stellantis (Fiat/Jeep), VW, and GM press rooms. |
 | 2026-04-17 | Feature Expansion: Automated media sourcing engine design and baseline schema refactor to UUIDs. |
 
 ---
