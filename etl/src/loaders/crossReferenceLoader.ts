@@ -9,7 +9,7 @@ export interface LoadResult {
 
 export class CrossReferenceLoader {
   /**
-   * Load unified vehicles to vehicles_unified table
+   * Load unified vehicles to vehicles table
    */
   async load(vehicles: UnifiedVehicle[]): Promise<LoadResult> {
     let inserted = 0;
@@ -19,7 +19,7 @@ export class CrossReferenceLoader {
     for (const vehicle of vehicles) {
       try {
         await this.upsertVehicle(vehicle);
-        
+
         // Check if it was an insert or update based on whether fipe_code already exists
         // For simplicity, we'll count all as upserts (inserts + updates)
         inserted++;
@@ -34,7 +34,7 @@ export class CrossReferenceLoader {
     await this.updateFuelEfficiencyFipeCodes(vehicles);
 
     console.log(
-      `[CrossReferenceLoader] Loaded ${inserted} vehicles to vehicles_unified table`
+      `[CrossReferenceLoader] Loaded ${inserted} vehicles to vehicles table`
     );
 
     return {
@@ -45,11 +45,11 @@ export class CrossReferenceLoader {
   }
 
   /**
-   * Upsert a single vehicle to vehicles_unified table
+   * Upsert a single vehicle to vehicles table
    */
   private async upsertVehicle(vehicle: UnifiedVehicle): Promise<void> {
     const queryText = `
-      INSERT INTO vehicles_unified (
+      INSERT INTO vehicles (
         fipe_code,
         brand,
         model,
@@ -131,18 +131,18 @@ export class CrossReferenceLoader {
   }
 
   /**
-   * Count records in vehicles_unified table
+   * Count records in vehicles table
    */
   async count(): Promise<number> {
-    const result = await query('SELECT COUNT(*) as count FROM vehicles_unified');
+    const result = await query('SELECT COUNT(*) as count FROM vehicles');
     return parseInt(result.rows[0].count, 10);
   }
 
   /**
-   * Truncate vehicles_unified table
+   * Truncate vehicles table
    */
   async truncate(): Promise<void> {
-    await query('TRUNCATE TABLE vehicles_unified CASCADE');
+    await query('TRUNCATE TABLE vehicles CASCADE');
   }
 }
 

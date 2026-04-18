@@ -14,7 +14,7 @@ Draft
 
 **From PROJECT.md:**
 - Data sources: Brasil API FIPE (vehicles + prices) and Inmetro PBE (fuel efficiency)
-- Target DB: PostgreSQL (Neon.tech or Supabase)
+- Target DB: PostgreSQL (Supabase)
 - Bootstrapping constraint: Zero-cost infrastructure
 
 **From ROADMAP.md:**
@@ -86,10 +86,10 @@ Draft
 
 ## Unified Schema
 
-**New Table: `vehicles_unified`**
+**New Table: `vehicles`**
 ```sql
-CREATE TABLE vehicles_unified (
-  id SERIAL PRIMARY KEY,
+CREATE TABLE vehicles (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   fipe_code VARCHAR(50) UNIQUE NOT NULL,
   brand VARCHAR(100) NOT NULL,
   model VARCHAR(200) NOT NULL,
@@ -99,6 +99,11 @@ CREATE TABLE vehicles_unified (
   -- FIPE data
   price DECIMAL(12, 2),
   
+  -- Media fields for Supabase Storage integration
+  image_url_path TEXT,
+  legal_attribution TEXT DEFAULT 'Foto: Divulgação/Fabricante',
+  image_source_url TEXT,
+
   -- Inmetro data
   city_km_l DECIMAL(5, 2),
   highway_km_l DECIMAL(5, 2),
@@ -111,9 +116,9 @@ CREATE TABLE vehicles_unified (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX idx_vehicles_unified_brand ON vehicles_unified(brand);
-CREATE INDEX idx_vehicles_unified_year ON vehicles_unified(year);
-CREATE INDEX idx_vehicles_unified_fuel_type ON vehicles_unified(fuel_type);
+CREATE INDEX idx_vehicles_brand ON vehicles(brand);
+CREATE INDEX idx_vehicles_year ON vehicles(year);
+CREATE INDEX idx_vehicles_fuel_type ON vehicles(fuel_type);
 ```
 
 **Update Existing Table:**
@@ -137,7 +142,7 @@ WHERE fe.brand = v.brand
 
 1. [ ] Cross-reference script can be executed with a single command
 2. [ ] Script matches FIPE vehicles with Inmetro data using defined strategy
-3. [ ] Unified `vehicles_unified` table is populated with matched records
+3. [ ] Unified `vehicles` table is populated with matched records
 4. [ ] `fuel_efficiency.fipe_code` is updated for matched records
 5. [ ] Unmatched records are logged and handled appropriately
 6. [ ] At least 90% of Inmetro records have a FIPE match

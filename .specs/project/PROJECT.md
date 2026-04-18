@@ -34,7 +34,7 @@ Brazilian car buyers face fragmented, biased information. Classifieds show stick
 |---|---|---|
 | Frontend | React (TypeScript) + Tailwind CSS (Design System) | Vercel or Netlify (Free Tier) |
 | Backend / API | .NET Core (C#) or Node.js — Clean Architecture | Render or Fly.io (Free Tier) |
-| Database | PostgreSQL (Serverless) | Neon.tech or Supabase (Free Tier) |
+| Database | PostgreSQL (Serverless) | Supabase (Free Tier) |
 | API Design | OpenAPI Specification (API-first) | — |
 | Data / ETL | Custom scripts — Brasil API (FIPE) + Inmetro PBE spreadsheets | — |
 

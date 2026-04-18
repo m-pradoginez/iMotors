@@ -5,7 +5,7 @@ import { query, closePool, testConnection } from './connection';
 
 dotenv.config();
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'NOT SET');
+console.log('SUPABASE_DB_URL:', process.env.SUPABASE_DB_URL || process.env.DATABASE_URL ? 'set' : 'NOT SET');
 
 const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
 

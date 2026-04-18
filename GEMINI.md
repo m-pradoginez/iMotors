@@ -4,7 +4,7 @@
 iMotors is a Brazilian automotive consultant platform focused on Total Cost of Ownership (TCO). This repository contains the **ETL (Extract, Transform, Load)** pipelines responsible for building the proprietary vehicle dataset.
 
 - **Objective**: Ingest and cross-reference vehicle prices (FIPE) and fuel efficiency (Inmetro) to enable data-driven recommendations.
-- **Tech Stack**: TypeScript, Node.js, PostgreSQL (Neon.tech), Axios, xlsx, Jest.
+- **Tech Stack**: TypeScript, Node.js, PostgreSQL (Supabase), Axios, xlsx, Jest.
 - **Status**: Milestone 1 (Data Foundation) is in progress. FIPE and Inmetro ingestors are implemented; cross-referencing (FIPE ↔ Inmetro) is the next priority.
 
 ---

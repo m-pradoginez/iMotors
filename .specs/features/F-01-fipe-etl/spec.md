@@ -14,12 +14,12 @@ Draft
 
 **From PROJECT.md:**
 - Data source: Brasil API (FIPE) — public, free, no auth required
-- Target DB: PostgreSQL (Neon.tech or Supabase)
+- Target DB: PostgreSQL (Supabase)
 - Bootstrapping constraint: Zero-cost infrastructure
 
 **From STATE.md:**
 - Open questions pending:
-  - Q-02: Final DB host (Neon vs Supabase) — needs decision before implementation
+  - Q-02: Final DB host — Decided: Supabase (2026-04-17)
   - Q-04: FIPE ↔ Inmetro matching strategy — affects data model design
 
 ---
@@ -81,7 +81,7 @@ Draft
 
 | Dependency | Feature | Status |
 |---|---|---|
-| DB host decision (Q-02) | STATE.md | Open — decide Neon vs Supabase |
+| DB host decision (Q-02) | STATE.md | ✅ Resolved — Supabase |
 | PostgreSQL connection | Infrastructure | Not set up yet |
 
 ---

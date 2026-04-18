@@ -4,7 +4,7 @@ async function seed() {
   console.log('Seeding test data...');
   try {
     await query(`
-      INSERT INTO vehicles_unified (
+      INSERT INTO vehicles (
         fipe_code, brand, model, year, fuel_type, category, price, 
         city_km_l, highway_km_l, efficiency_rating, match_confidence
       ) VALUES 

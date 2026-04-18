@@ -50,7 +50,7 @@ jobs:
         working-directory: ./etl
         run: npm run pipeline:fipe
         env:
-          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
           NODE_ENV: production
 
       - name: Upload FIPE ETL logs
@@ -87,7 +87,7 @@ jobs:
         working-directory: ./etl
         run: npm run pipeline:inmetro
         env:
-          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
           NODE_ENV: production
 
       - name: Upload Inmetro ETL logs
@@ -123,7 +123,7 @@ jobs:
         working-directory: ./etl
         run: npm run pipeline:cross-reference
         env:
-          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
           NODE_ENV: production
 
       - name: Upload Cross-reference logs
@@ -159,7 +159,7 @@ jobs:
         working-directory: ./etl
         run: npm run validate
         env:
-          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
           NODE_ENV: production
 
   # Job 5: Notify - Send status notification

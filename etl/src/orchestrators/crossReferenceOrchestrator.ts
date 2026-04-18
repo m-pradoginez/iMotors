@@ -108,10 +108,10 @@ export class CrossReferenceOrchestrator {
   }
 
   /**
-   * Clear vehicles_unified table before running
+   * Clear vehicles table before running
    */
   async clear(): Promise<void> {
-    console.log('[CrossReferenceOrchestrator] Clearing vehicles_unified table...');
+    console.log('[CrossReferenceOrchestrator] Clearing vehicles table...');
     await crossReferenceLoader.truncate();
   }
 }

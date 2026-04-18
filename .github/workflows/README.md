@@ -23,7 +23,7 @@ Automated monthly ETL pipeline to keep the vehicle database updated with latest 
 
 ```bash
 # Database connection
-NEON_DATABASE_URL=postgresql://user:pass@neon-host/db
+SUPABASE_DB_URL=postgresql://user:pass@supabase-host/db
 
 # Optional: Slack notifications
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
@@ -48,8 +48,8 @@ Each job uploads logs as artifacts with 30-day retention. Access via:
 ### Troubleshooting
 
 **Job fails with database connection error:**
-- Verify `NEON_DATABASE_URL` secret is set correctly
-- Check Neon.tech connection limits (free tier: 10 concurrent)
+- Verify `SUPABASE_DB_URL` secret is set correctly
+- Check Supabase connection limits (free tier: 60 concurrent)
 
 **Slack notifications not received:**
 - Verify `SLACK_WEBHOOK_URL` is set (optional)

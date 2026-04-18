@@ -4,8 +4,8 @@ import { Pool, PoolClient, QueryResult, QueryResultRow } from 'pg';
 dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('sslmode=require') ? { rejectUnauthorized: false } : false,
+  connectionString: process.env.SUPABASE_DB_URL || process.env.DATABASE_URL,
+  ssl: (process.env.SUPABASE_DB_URL || process.env.DATABASE_URL)?.includes('sslmode=require') ? { rejectUnauthorized: false } : false,
 });
 
 export async function query<T extends QueryResultRow = any>(text: string, params?: any[]): Promise<QueryResult<T>> {

@@ -62,6 +62,9 @@
 | 2026-04-16 | M4 Stabilizer: Hardened DB SSL connection ({rejectUnauthorized: true}), created API entry point (index.ts), and standardized Design System components (Button, Card, Slider). |
 | 2026-04-16 | Wizard Completion: Implemented UsageStep (Passo 2) and LocationStep (Passo 3), and orchestrated the full 3-step navigation flow in App.tsx. |
 | 2026-04-16 | UI/UX Enhancements: Added Framer Motion directional transitions, educational tooltips, real-time TCO feedback, and micro-interactions across all wizard steps. |
+| 2026-04-16 | F-10 complete: End-to-end validation. Playwright installed and configured. E2E tests for Happy Path, Edge Case (Empty vehicles), and Filters written. |
+| 2026-04-17 | Major Architectural Pivot: Full migration from Neon.tech to Supabase to consolidate Auth, Database, and Storage. |
+| 2026-04-17 | Feature Expansion: Automated media sourcing engine design and baseline schema refactor to UUIDs. |
 
 ---
 
@@ -78,6 +81,9 @@
 | D-07 | Backend language: Node.js + TypeScript | Faster cold starts on free tier; single language across ETL and API reduces context switching | 2026-04-15 |
 | D-08 | TCO formula includes all 5 components | Depreciation, fuel, IPVA, insurance, maintenance all included for comprehensive cost picture | 2026-04-15 |
 | D-09 | FIPE ↔ Inmetro matching: hybrid approach | Exact matching for clear cases + fuzzy matching for variations + manual mapping as fallback | 2026-04-14 |
+| D-10 | Full migration from Neon.tech to Supabase | Consolidate Auth, Database, and Storage into a single BaaS to support automated media sourcing. | 2026-04-17 |
+| D-11 | Primary Keys converted from SERIAL to UUID | Modernize schema for global unique identification and Supabase compatibility. | 2026-04-17 |
+| D-12 | Technical and Media tables unified into `vehicles` | Simplify schema and improve query efficiency for unified vehicle data. | 2026-04-17 |
 
 ---
 
@@ -86,7 +92,7 @@
 | ID | Question | Context | Status |
 |---|---|---|---|
 | Q-01 | ~~Final backend language: .NET Core (C#) vs Node.js?~~ | **Decision: Node.js + TypeScript** (see D-07). Rationale: Faster cold starts on free tier, single language across ETL and API. | ✅ Resolved 2026-04-15 |
-| Q-02 | Final DB host: Neon.tech vs Supabase? | Both offer PostgreSQL free tier. Supabase adds a built-in REST API; Neon has better branching for ETL workflows. | ✅ Resolved 2026-04-13 - Neon.tech |
+| Q-02 | Final DB host: Neon.tech vs Supabase? | Both offer PostgreSQL free tier. Supabase adds a built-in REST API; Neon has better branching for ETL workflows. | ✅ Resolved 2026-04-17 - Supabase (Pivot from Neon) |
 | Q-03 | ~~TCO formula: which cost components to include in v1?~~ | **Decision: All 5 components** (see D-08). Includes: depreciation, fuel cost, IPVA, insurance, maintenance. | ✅ Resolved 2026-04-15 |
 | Q-04 | ~~How to handle FIPE ↔ Inmetro model name mismatches?~~ | **Decision: Hybrid approach** (see D-09). Exact matching + fuzzy matching + manual mapping capability. | ✅ Resolved 2026-04-14 |
 

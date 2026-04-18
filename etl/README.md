@@ -61,8 +61,8 @@ for i in {1..15}; do echo "=== Batch $i ===" && npm run etl:run -- --batch && sl
 Create a `.env` file:
 
 ```
-# Neon.tech PostgreSQL connection
-DATABASE_URL=postgresql://user:password@host/neondb?sslmode=require
+# Supabase PostgreSQL connection
+SUPABASE_DB_URL=postgresql://user:password@host/supabase?sslmode=require
 
 # Optional: Brasil API base URL
 BRASIL_API_URL=https://fipe.parallelum.com.br/api/v2
@@ -178,13 +178,14 @@ The pipeline uses a two-phase matching approach:
 - **ExactMatcher**: Matches vehicles using exact criteria (brand, model, year, fuel_type)
 - **FuzzyMatcher**: Matches vehicles using configurable confidence threshold (default: 0.8)
 - **CrossReferenceTransformer**: Combines FIPE price data with Inmetro efficiency data
-- **CrossReferenceLoader**: Upserts unified vehicles to `vehicles_unified` table and updates `fuel_efficiency.fipe_code`
+- **CrossReferenceLoader**: Upserts unified vehicles to `vehicles` table and updates `fuel_efficiency.fipe_code`
 - **CrossReferenceOrchestrator**: Orchestrates the pipeline with logging and metrics
 
 ### Schema
 
-The `vehicles_unified` table stores:
-- `fipe_code`: FIPE vehicle code (primary key)
+The `vehicles` table stores:
+- `id`: UUID primary key
+- `fipe_code`: FIPE vehicle code (unique)
 - `brand`: Vehicle brand (normalized)
 - `model`: Vehicle model (normalized)
 - `year`: Model year
@@ -195,6 +196,9 @@ The `vehicles_unified` table stores:
 - `efficiency_rating`: Inmetro efficiency rating (nullable for FIPE-only)
 - `match_confidence`: exact, fuzzy, or manual
 - `match_notes`: Additional context for unmatched records
+- `image_url_path`: Reference to Supabase Storage object
+- `legal_attribution`: Text field for mandatory attribution
+- `image_source_url`: URL of the original press room source
 
 ### Execution Metrics
 

@@ -31,7 +31,7 @@
 - [ ] Table includes: fipe_code, brand, model, year, fuel_type, price, city_km_l, highway_km_l, efficiency_rating
 - [ ] Table includes: match_confidence, match_notes, created_at, updated_at
 - [ ] Indexes on brand, year, fuel_type
-- [ ] Migration runs successfully against Neon.tech
+- [ ] Migration runs successfully against Supabase
 
 **Gate check**: `npm run db:migrate`
 

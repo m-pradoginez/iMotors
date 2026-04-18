@@ -34,10 +34,10 @@ describe('FipePipeline E2E (Sample)', () => {
     expect(result.metrics.durationMs).toBeGreaterThan(0);
   }, 30000); // 30s timeout for real API calls
 
-  it('should run full pipeline with real DB when DATABASE_URL is set', async () => {
-    // Only run this test if DATABASE_URL is set (real DB integration)
-    if (!process.env.DATABASE_URL) {
-      console.log('Skipping real DB E2E test - DATABASE_URL not set');
+  it('should run full pipeline with real DB when SUPABASE_DB_URL is set', async () => {
+    // Only run this test if SUPABASE_DB_URL is set (real DB integration)
+    if (!process.env.SUPABASE_DB_URL && !process.env.DATABASE_URL) {
+      console.log('Skipping real DB E2E test - SUPABASE_DB_URL not set');
       return;
     }
 

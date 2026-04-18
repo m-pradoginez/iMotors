@@ -45,7 +45,7 @@
 - [ ] Migration file creates `fuel_efficiency` table
 - [ ] Table includes: vehicle_id (FK to vehicles), fuel_type, city_km_l, highway_km_l, efficiency_rating
 - [ ] Indexes on vehicle_id, fuel_type
-- [ ] Migration runs successfully against Neon.tech
+- [ ] Migration runs successfully against Supabase
 
 **Gate check**: `npm run db:migrate`
 

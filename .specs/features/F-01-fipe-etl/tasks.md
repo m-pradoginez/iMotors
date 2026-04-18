@@ -46,7 +46,7 @@
 - [ ] Migration file creates `vehicles` and `vehicle_prices` tables
 - [ ] Indexes on fipe_code, brand, vehicle_type
 - [ ] Connection module with error handling
-- [ ] Migration runs successfully against Neon.tech
+- [ ] Migration runs successfully against Supabase
 
 **Gate check**: `npm run db:migrate`
 
@@ -140,7 +140,7 @@
 **Description**: Full E2E test, README with usage instructions, optional CI workflow.
 
 **Done when**:
-- [ ] E2E test runs full pipeline against real Neon DB
+- [ ] E2E test runs full pipeline against real Supabase DB
 - [ ] README documents setup, env vars, running ETL
 - [ ] At least 100 vehicle records in DB after run
 - [ ] All previous tasks complete

@@ -53,11 +53,24 @@ Build bottom-up: data first, logic second, UI last. A beautiful form is worthles
 | # | Feature | Scope | Status |
 |---|---|---|---|
 | F-10.1 | Design System & UI Refactor | Implement Multi-step Wizard and clean Light Mode visual identity (Stabilized) | `[x] Complete` |
-| F-10 | End-to-end validation | Full funnel test across budget/mileage/category combinations; edge cases | `[ ] Not started` |
+| F-10 | End-to-end validation | Full funnel test across budget/mileage/category combinations; edge cases | `[x] Complete` |
 | F-11 | Deployment & CI | Frontend on Vercel/Netlify + Backend on Render/Fly.io + DB on Neon/Supabase; basic CI pipeline | `[ ] Not started` |
 | F-12 | SEO & sharing | Open Graph tags, share-friendly report URLs, basic meta for discoverability | `[ ] Not started` |
 
 **Milestone done when:** iMotors is live, publicly accessible, zero-cost infrastructure, with a shareable report URL.
+
+---
+
+### M5 — Supabase Transition & Media Engine `[ ] Not started`
+*The architectural shift for long-term scalability and rich media assets.*
+
+| # | Feature | Scope | Status |
+|---|---|---|---|
+| M5.1 | Infrastructure Reset | Supabase CLI Initialization; Baseline migration (UUID-based schema); Data migration via pg_dump | `[ ] Not started` |
+| M5.2 | Media Sourcing Automation | Python scraper for Stellantis, VW, and GM; Integration with Supabase Storage `vehicle-media` bucket | `[ ] Not started` |
+| M5.3 | Security & Access | RLS Policies: `anon` select access for `vehicles` and `storage` | `[ ] Not started` |
+
+**Milestone done when:** iMotors is running on Supabase with UUID primary keys and high-res press images served via Supabase Storage.
 
 ---
 

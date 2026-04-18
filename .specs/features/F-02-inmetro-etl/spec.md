@@ -14,7 +14,7 @@ Draft
 
 **From PROJECT.md:**
 - Data source: Inmetro PBE spreadsheets (public, downloadable)
-- Target DB: PostgreSQL (Neon.tech or Supabase)
+- Target DB: PostgreSQL (Supabase)
 - Bootstrapping constraint: Zero-cost infrastructure
 
 **From ROADMAP.md:**
@@ -94,7 +94,7 @@ Draft
 
 | Dependency | Feature | Status |
 |---|---|---|
-| DB host decision | STATE.md | Resolved (Neon.tech) |
+| DB host decision | STATE.md | ✅ Resolved (Supabase) |
 | PostgreSQL connection | F-01 | Complete |
 | Database schema | F-01 | Complete (may need extension for fuel efficiency) |
 
