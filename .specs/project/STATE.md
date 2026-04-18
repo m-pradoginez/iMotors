@@ -70,6 +70,7 @@
 | 2026-04-17 | Storage Setup: vehicle-media bucket created with public access and RLS policies for service role operations. |
 | 2026-04-17 | Media Automation: Python scraping system implemented with scrapers for Stellantis (Fiat/Jeep), VW, and GM press rooms. |
 | 2026-04-17 | Feature Expansion: Automated media sourcing engine design and baseline schema refactor to UUIDs. |
+| 2026-04-18 | Strategic Pivot: Vision expanded to Mobility Management Platform. Added V2 Roadmap for Motorcycles, AI Concierge, and Multi-source pricing (Localiza/Webmotors). |
 
 ---
 
