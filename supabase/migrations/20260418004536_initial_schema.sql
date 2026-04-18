@@ -93,5 +93,19 @@ CREATE POLICY "Public read access for fuel_efficiency" ON fuel_efficiency
 CREATE POLICY "Public read access for fipe_prices" ON fipe_prices
   FOR SELECT USING (true);
 
--- No insert/update/delete policies for anonymous users
--- These will be handled by service role key in backend
+-- RLS Policies: Service Role Write Access
+-- These allow the Python scraper/ETL (using SERVICE_ROLE_KEY) to insert/update/delete data
+CREATE POLICY "Service role has full access to vehicles" ON vehicles
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Service role has full access to fuel_efficiency" ON fuel_efficiency
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Service role has full access to fipe_prices" ON fipe_prices
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
