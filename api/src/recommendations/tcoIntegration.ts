@@ -35,11 +35,6 @@ export async function calculateVehicleTCO(
 
   const result = tcoCalculator.calculate(tcoInput);
 
-  // Filter out vehicles exceeding budget
-  if (result.tco_monthly > request.budget_monthly) {
-    return null;
-  }
-
   return {
     vehicle,
     tco: result.tco_monthly,

@@ -32,11 +32,11 @@ export function rankVehicles(
     return a.vehicle.price - b.vehicle.price;
   });
 
-  // Return Top 3
-  const top3 = sorted.slice(0, 3);
+  // Return Top 6
+  const top6 = sorted.slice(0, 6);
 
   // Map to Recommendation format
-  return top3.map((item, index) => ({
+  return top6.map((item, index) => ({
     rank: index + 1,
     vehicle: item.vehicle,
     tco_monthly: item.tco,

@@ -20,7 +20,8 @@ export async function queryVehicles(
       city_km_l,
       highway_km_l,
       efficiency_rating,
-      match_confidence
+      match_confidence,
+      image_url
     FROM vehicles
     WHERE price IS NOT NULL
       AND city_km_l IS NOT NULL
@@ -44,8 +45,8 @@ export async function queryVehicles(
     params.push(request.fuel_preference.toLowerCase());
   }
 
-  // Optional: Price range filter (2x budget_monthly * 12)
-  const maxPrice = request.budget_monthly * 12 * 2;
+  // Optional: Price range filter (10x budget_monthly * 12)
+  const maxPrice = request.budget_monthly * 12 * 10;
   paramCount++;
   sql += ` AND price <= $${paramCount}`;
   params.push(maxPrice);
@@ -66,5 +67,6 @@ export async function queryVehicles(
     highway_km_l: row.highway_km_l,
     efficiency_rating: row.efficiency_rating,
     match_confidence: row.match_confidence,
+    image_url: row.image_url,
   }));
 }
