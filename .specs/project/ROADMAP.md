@@ -135,9 +135,7 @@ F-10 → F-11 → F-12
 
 | ID | Feature | Description | Status |
 |---|---|---|---|
-| F-11 | Moto Support (V2) | Full TCO integration for motorcycles using FIPE/INMETRO data. **Priority for V2 release to address Brazilian demand for low-TCO alternatives.** | `[ ] Planned` |
-| F-12 | iMotors Concierge (AI) | LLM-powered assistant (Gemini) with Function Calling to guide users via chat. | `[ ] Planned` |
-| F-13 | Multi-Source Pricing | Integration with Localiza Seminovos, Webmotors, and KBB for real-time market values. | `[ ] Planned` |
-| F-14 | Personal Fleet Tracker | Dashboard for tracking expenses (IPVA, insurance, fuel) of the user's current vehicle. | `[ ] Planned` |
-| F-15 | Subscription vs. Ownership | Comparative tool for rental/subscription models vs. buying/financing. | `[ ] Planned` |
-| F-16 | Lead Gen & Offers | Integration with marketplaces (OLX/Webmotors) to show real units for sale. | `[ ] Planned` |
+| F-13 | Moto Support (V2) | Full TCO integration for motorcycles using FIPE/INMETRO data. Priority for V2. | `[ ] Planned` |
+| F-14 | iMotors Concierge (AI) | LLM-powered assistant (Gemini) with Function Calling to guide users via chat. | `[ ] Planned` |
+| F-15 | Multi-Source Pricing | Integration with Localiza Seminovos, Webmotors, and KBB. | `[ ] Planned` |
+| F-16 | Personal Fleet Tracker | Dashboard for tracking expenses of the user's current vehicle. | `[ ] Planned` |
