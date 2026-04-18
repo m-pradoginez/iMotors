@@ -20,6 +20,8 @@ Thumbs.db
 # Temporary scripts
 add_image_column.js
 test.js
+media-automation/.env
+media-automation/test_storage.py
 
 # ETL data (checkpoint files)
 etl/data/
