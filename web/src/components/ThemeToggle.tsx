@@ -1,33 +1,32 @@
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useTheme } from '../hooks/useTheme';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark';
 
-  const themes = [
-    { value: 'light' as const, icon: Sun, label: 'Claro' },
-    { value: 'dark' as const, icon: Moon, label: 'Escuro' },
-    { value: 'system' as const, icon: Monitor, label: 'Sistema' },
-  ];
+  const toggle = () => setTheme(isDark ? 'light' : 'dark');
 
   return (
-    <div className="flex items-center space-x-1 p-1 rounded-xl bg-muted/50 backdrop-blur-sm border border-border">
-      {themes.map(({ value, icon: Icon, label }) => (
-        <button
-          key={value}
-          onClick={() => setTheme(value)}
-          className={`
-            flex items-center justify-center p-2 rounded-lg transition-all duration-200
-            ${theme === value 
-              ? 'bg-primary text-white shadow-sm' 
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            }
-          `}
-          title={label}
-        >
-          <Icon className="h-4 w-4" />
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={toggle}
+      title={isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'}
+      className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-muted/50 border border-border backdrop-blur-sm hover:bg-muted transition-colors"
+    >
+      <motion.div
+        key={isDark ? 'moon' : 'sun'}
+        initial={{ rotate: -30, opacity: 0, scale: 0.7 }}
+        animate={{ rotate: 0, opacity: 1, scale: 1 }}
+        exit={{ rotate: 30, opacity: 0, scale: 0.7 }}
+        transition={{ duration: 0.2 }}
+      >
+        {isDark ? (
+          <Moon className="h-4 w-4 text-foreground" />
+        ) : (
+          <Sun className="h-4 w-4 text-foreground" />
+        )}
+      </motion.div>
+    </button>
   );
 }

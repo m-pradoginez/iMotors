@@ -9,6 +9,7 @@ export interface Vehicle {
   highway_km_l: number | null;
   efficiency_rating: string | null;
   match_confidence: 'exact' | 'fuzzy' | 'manual';
+  image_url?: string | null;
 }
 
 export interface TCOBreakdown {

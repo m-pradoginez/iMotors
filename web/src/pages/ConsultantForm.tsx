@@ -202,11 +202,19 @@ export function ConsultantForm() {
 
                     <div className="space-y-8">
                       <div className="relative pt-2">
-                        <div className="relative h-3 bg-muted rounded-full overflow-hidden">
+                        <div className="relative h-3 bg-muted rounded-full">
                           <motion.div 
-                            className="absolute h-full bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full"
+                            className="absolute h-full bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full pointer-events-none"
                             animate={{ width: `${formData.city_highway_ratio * 100}%` }}
+                            transition={{ type: "tween", duration: 0.1, ease: "linear" }}
                           />
+                          <motion.div
+                            className="absolute top-1/2 -mt-3 -ml-3 h-6 w-6 bg-white border-2 border-emerald-500 rounded-full shadow-lg flex items-center justify-center pointer-events-none"
+                            animate={{ left: `${formData.city_highway_ratio * 100}%` }}
+                            transition={{ type: "tween", duration: 0.1, ease: "linear" }}
+                          >
+                            <div className="h-2 w-2 bg-emerald-500 rounded-full" />
+                          </motion.div>
                         </div>
                         <input
                           type="range"

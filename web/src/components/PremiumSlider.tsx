@@ -58,13 +58,21 @@ export function PremiumSlider({
       </div>
       
       <div className="relative pt-2">
-        <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
+        <div className="relative h-2.5 bg-muted rounded-full">
           <motion.div 
-            className="absolute h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+            className="absolute h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)] pointer-events-none"
             initial={false}
             animate={{ width: `${percentage}%` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: "tween", duration: 0.1, ease: "linear" }}
           />
+          <motion.div
+            className="absolute top-1/2 -mt-2.5 -ml-2.5 h-5 w-5 bg-white border-2 border-emerald-500 rounded-full shadow-lg flex items-center justify-center pointer-events-none"
+            initial={false}
+            animate={{ left: `${percentage}%` }}
+            transition={{ type: "tween", duration: 0.1, ease: "linear" }}
+          >
+            <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full" />
+          </motion.div>
         </div>
         <input
           type="range"

@@ -13,7 +13,7 @@ Frontend application for iMotors - a B2C car recommendation and Total Cost of Ow
 ## Features
 
 - **Constraint Input Form**: Budget, mileage, city/highway ratio, state selection, category and fuel preferences
-- **TCO Report Page**: Top 3 vehicle recommendations with detailed monthly cost breakdown
+- **TCO Report Page**: Top 3 vehicle recommendations with image previews and detailed monthly cost breakdown
 - **External Redirects**: Direct links to Webmotors and OLX with UTM tracking
 
 ## Getting Started

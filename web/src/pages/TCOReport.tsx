@@ -157,9 +157,18 @@ export function TCOReport() {
             }`}>
               {idx === 0 ? <Sparkles className="w-3 h-3" /> : <Award className="w-3 h-3" />}
               <span>#{rec.rank} Recomendação</span>
-            </div>
+</div>
 
-            {/* Card Header */}
+   {/* Image */}
+   <div className="w-full h-48">
+     <img 
+       src={`https://placehold.co/600x400/png?text=${encodeURIComponent(rec.vehicle.brand + ' ' + rec.vehicle.model)}`}
+       alt={`${rec.vehicle.brand} ${rec.vehicle.model}`}
+       className="w-full h-full object-cover rounded-t-xl"
+     />
+   </div>
+
+   {/* Card Header */}
             <div className="p-8 pb-0 space-y-4">
               <div className="space-y-1">
                 <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">{rec.vehicle.brand}</p>
