@@ -7,7 +7,7 @@
 .weave/
 
 # Node artifacts at root level
-package-lock.json
+/package-lock.json
 node_modules/
 
 # OS
