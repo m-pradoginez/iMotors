@@ -5,10 +5,10 @@ from .base_scraper import BaseScraper
 
 
 class GMScraper(BaseScraper):
-    """Scraper for GM press room (media.chevrolet.com.br)."""
+    """Scraper for GM press room (media.chevrolet.com.br) with Selenium support."""
     
     def __init__(self):
-        super().__init__("https://media.chevrolet.com.br")
+        super().__init__("https://news.chevrolet.com.br", use_selenium=True)
     
     def scrape_vehicles(self) -> List[Dict]:
         """Scrape vehicles from GM press room."""

@@ -5,10 +5,10 @@ from .base_scraper import BaseScraper
 
 
 class StellantisScraper(BaseScraper):
-    """Scraper for Stellantis press room (media.stellantis.com/br-pt/)."""
+    """Scraper for Stellantis press room (media.stellantis.com/br-pt/) with Selenium support."""
     
     def __init__(self):
-        super().__init__("https://media.stellantis.com")
+        super().__init__("https://media.stellantis.com", use_selenium=True)
         self.brands = ['fiat', 'jeep']
     
     def scrape_vehicles(self) -> List[Dict]:

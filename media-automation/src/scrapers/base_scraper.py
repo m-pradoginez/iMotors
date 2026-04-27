@@ -4,27 +4,89 @@ import requests
 from bs4 import BeautifulSoup
 from typing import List, Dict, Optional
 import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class BaseScraper:
-    """Base class for press room scrapers."""
+    """Base class for press room scrapers with Selenium support."""
     
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, use_selenium: bool = True):
         self.base_url = base_url
+        self.use_selenium = use_selenium
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         })
+        self.driver = None
+        
+        if self.use_selenium:
+            self._init_selenium()
+    
+    def _init_selenium(self):
+        """Initialize Selenium WebDriver in headless mode."""
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+        
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
+        self.driver.set_page_load_timeout(30)
     
     def get_page(self, url: str) -> Optional[BeautifulSoup]:
-        """Fetch and parse a page."""
+        """Fetch and parse a page using Selenium if enabled, otherwise requests."""
         try:
-            response = self.session.get(url, timeout=10)
-            response.raise_for_status()
-            return BeautifulSoup(response.content, 'lxml')
+            if self.use_selenium and self.driver:
+                return self._get_page_selenium(url)
+            else:
+                return self._get_page_requests(url)
         except Exception as e:
             print(f"Error fetching {url}: {e}")
             return None
+    
+    def _get_page_requests(self, url: str) -> Optional[BeautifulSoup]:
+        """Fetch page using requests (fallback)."""
+        response = self.session.get(url, timeout=10)
+        response.raise_for_status()
+        return BeautifulSoup(response.content, 'lxml')
+    
+    def _get_page_selenium(self, url: str) -> Optional[BeautifulSoup]:
+        """Fetch page using Selenium with explicit waits."""
+        self.driver.get(url)
+        
+        # Wait for body to be present
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, 'body'))
+        )
+        
+        # Try to wait for gallery elements if they exist
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '.gallery-grid, .image-asset, .gallery, [class*="gallery"]'))
+            )
+        except:
+            # Gallery elements might not exist on all pages
+            pass
+        
+        # Allow time for dynamic content to load
+        time.sleep(2)
+        
+        html = self.driver.page_source
+        return BeautifulSoup(html, 'lxml')
+    
+    def close(self):
+        """Close Selenium driver if initialized."""
+        if self.driver:
+            self.driver.quit()
     
     def scrape_vehicles(self) -> List[Dict]:
         """Scrape vehicles from the press room. Override in subclasses."""

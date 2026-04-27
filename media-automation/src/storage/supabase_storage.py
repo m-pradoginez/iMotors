@@ -1,12 +1,14 @@
 """Supabase Storage manager for uploading vehicle images."""
 
 import os
+from pathlib import Path
 from supabase import create_client, Client
 from typing import Optional
+import time
 
 
 class SupabaseStorageManager:
-    """Manages image uploads to Supabase Storage."""
+    """Manages image uploads to Supabase Storage with retry logic."""
     
     def __init__(self):
         self.bucket_name = "vehicle-media"
@@ -23,44 +25,97 @@ class SupabaseStorageManager:
         
         self.supabase = create_client(supabase_url, supabase_key)
     
-    def upload_image(self, brand: str, model: str, year: int, image_data: bytes) -> str:
+    def _sanitize_filename(self, brand: str, model: str, year: int) -> str:
         """
-        Upload an image to Supabase Storage.
+        Sanitize filename using pathlib to remove illegal characters and spaces.
+        
+        Args:
+            brand: Vehicle brand (e.g., "FIAT", "VW")
+            model: Vehicle model (e.g., "Toro", "Golf")
+            year: Vehicle year (e.g., 2024)
+            
+        Returns:
+            Sanitized storage path
+        """
+        # Use pathlib to sanitize the filename
+        safe_brand = Path(brand.lower()).name
+        safe_model = Path(model).name
+        safe_model = safe_model.replace(" ", "-").replace("/", "-").replace("\\", "-")
+        safe_model = ''.join(c for c in safe_model if c.isalnum() or c in '-_')
+        
+        return f"{safe_brand}/{safe_model}-{year}.jpg"
+    
+    def upload_image(self, brand: str, model: str, year: int, image_data: bytes, max_retries: int = 3) -> str:
+        """
+        Upload an image to Supabase Storage with retry logic and upsert support.
         
         Args:
             brand: Vehicle brand (e.g., "FIAT", "VW")
             model: Vehicle model (e.g., "Toro", "Golf")
             year: Vehicle year (e.g., 2024)
             image_data: Image bytes data
+            max_retries: Maximum number of retry attempts
             
         Returns:
             Storage path for the uploaded image
         """
-        # Sanitize model name for filename
-        safe_model = model.replace(" ", "-").replace("/", "-")
-        filename = f"{brand.lower()}/{safe_model}-{year}.jpg"
+        filename = self._sanitize_filename(brand, model, year)
         
-        try:
-            # Upload to Supabase Storage
-            self.supabase.storage.from_(self.bucket_name).upload(
-                path=filename,
-                file=image_data,
-                file_options={"content-type": "image/jpeg"}
-            )
-            
-            # Get public URL
-            public_url = self.supabase.storage.from_(self.bucket_name).get_public_url(filename)
-            
-            print(f"  Uploaded: {filename}")
-            return filename
-            
-        except Exception as e:
-            print(f"  Error uploading {filename}: {e}")
-            raise
+        for attempt in range(max_retries):
+            try:
+                # Upload to Supabase Storage with upsert option
+                self.supabase.storage.from_(self.bucket_name).upload(
+                    path=filename,
+                    file=image_data,
+                    file_options={
+                        "content-type": "image/jpeg",
+                        "upsert": "true"  # Enable upsert to prevent 409 errors
+                    }
+                )
+                
+                print(f"  ✓ Uploaded: {filename}")
+                return filename
+                
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # Exponential backoff
+                    print(f"  ⚠ Upload attempt {attempt + 1} failed for {filename}: {e}")
+                    print(f"  Retrying in {wait_time} seconds...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"  ✗ Error uploading {filename} after {max_retries} attempts: {e}")
+                    raise
     
     def get_public_url(self, storage_path: str) -> str:
         """Get public URL for a storage path."""
         return self.supabase.storage.from_(self.bucket_name).get_public_url(storage_path)
+    
+    def verify_bucket_connection(self) -> bool:
+        """
+        Verify connection to the vehicle-media bucket.
+        
+        Returns:
+            True if connection successful, False otherwise
+        """
+        try:
+            print(f"Verifying connection to bucket: {self.bucket_name}")
+            
+            # List buckets to check if our bucket exists
+            buckets = self.supabase.storage.list_buckets()
+            bucket_names = [b.name for b in buckets]
+            
+            if self.bucket_name not in bucket_names:
+                print(f"  ✗ Bucket '{self.bucket_name}' not found")
+                return False
+            
+            # Try to list files in the bucket to verify access
+            files = self.supabase.storage.from_(self.bucket_name).list()
+            print(f"  ✓ Bucket connection verified (found {len(files)} files)")
+            return True
+            
+        except Exception as e:
+            print(f"  ✗ Bucket connection failed: {e}")
+            return False
     
     def create_bucket_if_not_exists(self):
         """Create the vehicle-media bucket if it doesn't exist."""

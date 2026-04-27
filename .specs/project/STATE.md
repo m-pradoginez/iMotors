@@ -71,6 +71,7 @@
 | 2026-04-17 | Media Automation: Python scraping system implemented with scrapers for Stellantis (Fiat/Jeep), VW, and GM press rooms. |
 | 2026-04-17 | Feature Expansion: Automated media sourcing engine design and baseline schema refactor to UUIDs. |
 | 2026-04-18 | Strategic Pivot: Vision expanded to Mobility Management Platform. Added V2 Roadmap for Motorcycles, AI Concierge, and Multi-source pricing (Localiza/Webmotors). |
+| 2026-04-27 | Media Engine UI Integration: Frontend updated to display Supabase Storage images with fallback placeholder, legal attribution, and Light Mode styling (soft shadows, rounded-2xl). Added VITE_SUPABASE_STORAGE_URL environment variable. |
 
 ---
 

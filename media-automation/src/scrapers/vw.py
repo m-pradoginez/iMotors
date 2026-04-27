@@ -5,10 +5,10 @@ from .base_scraper import BaseScraper
 
 
 class VWScraper(BaseScraper):
-    """Scraper for VW press room (vwnews.com.br)."""
+    """Scraper for VW press room (vwnews.com.br) with Selenium support."""
     
     def __init__(self):
-        super().__init__("https://vwnews.com.br")
+        super().__init__("https://vwnews.com.br", use_selenium=True)
     
     def scrape_vehicles(self) -> List[Dict]:
         """Scrape vehicles from VW press room."""

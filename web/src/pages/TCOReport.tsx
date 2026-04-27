@@ -16,6 +16,7 @@ import {
   Share2
 } from 'lucide-react';
 import { Button } from '../components/Button';
+import { VehiclePlaceholder } from '../components/VehiclePlaceholder';
 import { apiClient } from '../api/client';
 import { formatCurrency, generateWebmotorsUrl, generateOlxUrl } from '../lib/utils';
 import type { RecommendationResponse, RecommendationRequest } from '../types/api';
@@ -216,13 +217,35 @@ export function TCOReport() {
 </div>
 
    {/* Image */}
-   <div className="w-full h-48">
-     <img 
-       src={`https://placehold.co/600x400/png?text=${encodeURIComponent(rec.vehicle.brand + ' ' + rec.vehicle.model)}`}
-       alt={`${rec.vehicle.brand} ${rec.vehicle.model}`}
-       className="w-full h-full object-cover rounded-t-xl"
-     />
+   <div className="w-full h-48 rounded-t-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 shadow-sm">
+     {rec.vehicle.image_url_path ? (
+       <img 
+         src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${rec.vehicle.image_url_path}`}
+         alt={`${rec.vehicle.brand} ${rec.vehicle.model}`}
+         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+         onError={(e) => {
+           e.currentTarget.style.display = 'none';
+           e.currentTarget.nextElementSibling?.classList.remove('hidden');
+         }}
+       />
+     ) : null}
+     {!rec.vehicle.image_url_path && (
+       <VehiclePlaceholder 
+         brand={rec.vehicle.brand}
+         model={rec.vehicle.model}
+         className="h-full"
+       />
+     )}
    </div>
+   
+   {/* Legal Attribution */}
+   {rec.vehicle.legal_attribution && (
+     <div className="px-6 pt-3 pb-0">
+       <p className="text-[9px] font-medium text-muted-foreground/70 italic">
+         {rec.vehicle.legal_attribution}
+       </p>
+     </div>
+   )}
 
    {/* Card Header */}
             <div className="p-8 pb-0 space-y-4">

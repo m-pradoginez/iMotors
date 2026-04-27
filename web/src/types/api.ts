@@ -10,6 +10,8 @@ export interface Vehicle {
   efficiency_rating: string | null;
   match_confidence: 'exact' | 'fuzzy' | 'manual';
   image_url?: string | null;
+  image_url_path?: string | null;
+  legal_attribution?: string | null;
 }
 
 export interface TCOBreakdown {
