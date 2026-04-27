@@ -10,7 +10,10 @@ This Python-based automation system scrapes vehicle images from official Brazili
 
 - **Multi-brand Support**: Scrapes from Stellantis (Fiat/Jeep), Volkswagen, and Chevrolet press rooms
 - **High-Quality Images**: Prioritizes studio shots and high-resolution press assets
+- **Selenium Integration**: Headless Chrome for JavaScript-heavy gallery pages with explicit waits
 - **Supabase Integration**: Uploads directly to Supabase Storage with public access
+- **Retry Logic**: Exponential backoff with upsert support for resilient uploads
+- **Unicode Normalization**: Converts accented characters to ASCII (e.g., Doblò → Doblo)
 - **Database Updates**: Automatically updates the vehicles table with image references
 - **Legal Compliance**: Maintains proper attribution for all sourced images
 
@@ -18,14 +21,19 @@ This Python-based automation system scrapes vehicle images from official Brazili
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.10+ (3.12 recommended for best compatibility)
 - Supabase project with Storage enabled
 - Environment variables configured
+
+**Note:** Python 3.13 may have compatibility issues with some dependencies. Use Python 3.10-3.12.
 
 ### Installation
 
 ```bash
 cd media-automation
+python -m venv venv
+venv\Scripts\activate  # On Windows
+source venv/bin/activate  # On macOS/Linux
 pip install -r requirements.txt
 ```
 
@@ -133,9 +141,9 @@ Press room websites may change structure. Update the selectors in the respective
 
 ## Future Enhancements
 
-- [ ] Add Selenium for dynamic content scraping
 - [ ] Implement robots.txt checking
-- [ ] Add retry logic for failed requests
 - [ ] Support for additional brands (Toyota, Honda, etc.)
 - [ ] Image deduplication
 - [ ] Scheduled runs via cron or GitHub Actions
+- [ ] Better error handling and logging
+- [ ] Parallel scraping for faster execution

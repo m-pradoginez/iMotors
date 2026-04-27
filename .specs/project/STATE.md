@@ -72,6 +72,10 @@
 | 2026-04-17 | Feature Expansion: Automated media sourcing engine design and baseline schema refactor to UUIDs. |
 | 2026-04-18 | Strategic Pivot: Vision expanded to Mobility Management Platform. Added V2 Roadmap for Motorcycles, AI Concierge, and Multi-source pricing (Localiza/Webmotors). |
 | 2026-04-27 | Media Engine UI Integration: Frontend updated to display Supabase Storage images with fallback placeholder, legal attribution, and Light Mode styling (soft shadows, rounded-2xl). Added VITE_SUPABASE_STORAGE_URL environment variable. |
+| 2026-04-27 | Dark Mode Restoration: Restored dark mode styling across all components (index.css, TCOReport, LandingPage, ConsultantForm, Button, VehiclePlaceholder) with proper CSS variables and Tailwind dark variants. |
+| 2026-04-27 | Media Scraper Refactor: Refactored media scraper with Selenium headless mode for JavaScript-heavy gallery pages, explicit WebDriverWait for dynamic content, pathlib-based filename sanitization, retry logic with exponential backoff, and upsert support for Supabase uploads. |
+| 2026-04-27 | Unicode Normalization: Added unicodedata.normalize to convert accented characters to ASCII (e.g., Doblò -> Doblo) to prevent Supabase InvalidKey errors. |
+| 2026-04-27 | Image Extraction Improvements: Removed restrictive size filter from image extraction, added gallery container fallback, and support for lazy-loaded images (data-original attribute). |
 
 ---
 
