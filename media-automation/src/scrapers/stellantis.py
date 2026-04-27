@@ -93,16 +93,27 @@ class StellantisScraper(BaseScraper):
         """Extract all image URLs from the page."""
         images = []
         
-        # Look for high-quality images
+        # Look for all images
         img_tags = soup.find_all('img')
         
         for img in img_tags:
-            src = img.get('src') or img.get('data-src')
+            src = img.get('src') or img.get('data-src') or img.get('data-original')
             if src:
                 if not src.startswith('http'):
                     src = f"{self.base_url}{src}"
-                # Filter for high-resolution images
-                if any(size in src.lower() for size in ['large', 'high', 'original', 'full']):
+                # Skip very small images (icons, thumbnails)
+                if not any(skip in src.lower() for skip in ['icon', 'logo', 'thumb', 'avatar']):
                     images.append(src)
+        
+        # If no images found, try to find images in gallery containers
+        if not images:
+            gallery_containers = soup.find_all(['div', 'section'], class_=lambda x: x and ('gallery' in x.lower() or 'image' in x.lower()))
+            for container in gallery_containers:
+                for img in container.find_all('img'):
+                    src = img.get('src') or img.get('data-src') or img.get('data-original')
+                    if src:
+                        if not src.startswith('http'):
+                            src = f"{self.base_url}{src}"
+                        images.append(src)
         
         return images

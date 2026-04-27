@@ -1,6 +1,7 @@
 """Supabase Storage manager for uploading vehicle images."""
 
 import os
+import unicodedata
 from pathlib import Path
 from supabase import create_client, Client
 from typing import Optional
@@ -28,6 +29,7 @@ class SupabaseStorageManager:
     def _sanitize_filename(self, brand: str, model: str, year: int) -> str:
         """
         Sanitize filename using pathlib to remove illegal characters and spaces.
+        Normalizes Unicode characters to ASCII (e.g., Doblò -> Doblo).
         
         Args:
             brand: Vehicle brand (e.g., "FIAT", "VW")
@@ -37,9 +39,13 @@ class SupabaseStorageManager:
         Returns:
             Sanitized storage path
         """
+        # Normalize Unicode to ASCII (remove accents)
+        safe_brand = unicodedata.normalize('NFKD', brand.lower()).encode('ascii', 'ignore').decode('ascii')
+        safe_model = unicodedata.normalize('NFKD', model).encode('ascii', 'ignore').decode('ascii')
+        
         # Use pathlib to sanitize the filename
-        safe_brand = Path(brand.lower()).name
-        safe_model = Path(model).name
+        safe_brand = Path(safe_brand).name
+        safe_model = Path(safe_model).name
         safe_model = safe_model.replace(" ", "-").replace("/", "-").replace("\\", "-")
         safe_model = ''.join(c for c in safe_model if c.isalnum() or c in '-_')
         
