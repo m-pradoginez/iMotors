@@ -11,6 +11,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/consultancy" element={<ConsultantForm />} />
         <Route path="/report" element={<TCOReport />} />
+        <Route path="/report/:encodedData" element={<TCOReport />} />
       </Routes>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
 import { 
   Fuel, 
@@ -12,7 +12,8 @@ import {
   Info,
   ChevronRight,
   Sparkles,
-  Zap
+  Zap,
+  Share2
 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { apiClient } from '../api/client';
@@ -38,23 +39,49 @@ const itemVariants: Variants = {
 
 export function TCOReport() {
   const navigate = useNavigate();
+  const { encodedData } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<RecommendationResponse | null>(null);
+  const [shareUrl, setShareUrl] = useState<string>('');
 
   useEffect(() => {
     const fetchRecommendations = async () => {
-      const storedRequest = sessionStorage.getItem('recommendationRequest');
-      
-      if (!storedRequest) {
-        navigate('/');
-        return;
+      let request: RecommendationRequest | null = null;
+
+      // Try to get request from URL parameter first (shared link)
+      if (encodedData) {
+        try {
+          const decoded = atob(encodedData);
+          request = JSON.parse(decoded);
+        } catch (err) {
+          setError('Link inválido ou expirado');
+          setLoading(false);
+          return;
+        }
+      } else {
+        // Fall back to sessionStorage
+        const storedRequest = sessionStorage.getItem('recommendationRequest');
+        if (!storedRequest) {
+          navigate('/');
+          return;
+        }
+        request = JSON.parse(storedRequest);
       }
 
       try {
-        const request: RecommendationRequest = JSON.parse(storedRequest);
         const data = await apiClient.getRecommendations(request);
         setResponse(data);
+        
+        // Generate share URL
+        const encoded = btoa(JSON.stringify(request));
+        setShareUrl(`${window.location.origin}/report/${encoded}`);
+        
+        // Update document title for SEO
+        if (data.recommendations.length > 0) {
+          const topVehicle = data.recommendations[0].vehicle;
+          document.title = `${topVehicle.brand} ${topVehicle.model} - Melhor TCO | iMotors`;
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro ao buscar recomendações');
       } finally {
@@ -63,7 +90,26 @@ export function TCOReport() {
     };
 
     fetchRecommendations();
-  }, [navigate]);
+  }, [navigate, encodedData]);
+
+  const handleShare = async () => {
+    if (navigator.share && shareUrl) {
+      try {
+        await navigator.share({
+          title: 'iMotors - Minha Recomendação de Carro',
+          text: 'Confira a análise de custo total que preparei no iMotors!',
+          url: shareUrl,
+        });
+      } catch (err) {
+        // User cancelled or error occurred
+        console.log('Share failed:', err);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(shareUrl);
+      alert('Link copiado para a área de transferência!');
+    }
+  };
 
   if (loading) {
     return (
@@ -130,9 +176,19 @@ export function TCOReport() {
           </p>
         </div>
         
-        <div className="flex items-center space-x-2 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">
-          <Zap className="h-4 w-4 text-emerald-500" />
-          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">Cálculo TCO 100% Preciso</span>
+        <div className="flex items-center space-x-3">
+          <Button 
+            onClick={handleShare}
+            variant="outline" 
+            className="h-10 px-4 rounded-xl text-xs uppercase tracking-widest font-black"
+          >
+            <Share2 className="mr-2 h-4 w-4" />
+            Compartilhar
+          </Button>
+          <div className="flex items-center space-x-2 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">
+            <Zap className="h-4 w-4 text-emerald-500" />
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">Cálculo TCO 100% Preciso</span>
+          </div>
         </div>
       </motion.div>
 
