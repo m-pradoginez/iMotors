@@ -20,11 +20,28 @@ Thumbs.db
 # Temporary scripts
 add_image_column.js
 test.js
+migrate_add_image_url.js
 media-automation/.env
 media-automation/test_storage.py
+
+# Environment variables (contains secrets)
+*.env
 
 # ETL data (checkpoint files)
 etl/data/
 
 # Skills lock file
 skills-lock.json
+
+# Python virtual environments
+media-automation/venv/
+**/venv/
+
+# Python cache
+**/__pycache__/
+*.pyc
+*.pyo
+
+# API migrations and scripts (optional - uncomment if needed)
+# api/migrations/
+# api/scripts/
